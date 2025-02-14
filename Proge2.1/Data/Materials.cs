@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Proge2._1.Data
+{
+    public class Materials
+    {
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        [StringLength(55)]
+        public string Unit { get; set; }
+        [Required]
+        public decimal price { get; set; }
+
+        public string seller { get; set; }
+
+    }
+}
