@@ -4,7 +4,7 @@ namespace Proge2._1.Data
 {
     public class Customer
     {
-        public int Id { get; set; }
+        public int CustomerId { get; set; }
 
         
         [Required]

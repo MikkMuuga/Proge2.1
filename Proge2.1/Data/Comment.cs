@@ -11,6 +11,7 @@ namespace Proge2._1.Data
         [StringLength(512)]
         public string Content { get; set; }
         [Required]
+        [StringLength(512)]
         public IdentityUser User { get; set; }
     }
 }
