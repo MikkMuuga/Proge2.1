@@ -33,7 +33,7 @@ namespace Proge2._1.Controllers
             }
 
             var budget = await _context.Budgets
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.BudgetId == id);
             if (budget == null)
             {
                 return NotFound();
@@ -87,7 +87,7 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,client,date,ServiceCost,TotalCost")] Budget budget)
         {
-            if (id != budget.id)
+            if (id != budget.BudgetId)
             {
                 return NotFound();
             }
@@ -101,7 +101,7 @@ namespace Proge2._1.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BudgetExists(budget.id))
+                    if (!BudgetExists(budget.BudgetId))
                     {
                         return NotFound();
                     }
@@ -124,7 +124,7 @@ namespace Proge2._1.Controllers
             }
 
             var budget = await _context.Budgets
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.BudgetId == id);
             if (budget == null)
             {
                 return NotFound();
@@ -150,7 +150,7 @@ namespace Proge2._1.Controllers
 
         private bool BudgetExists(int id)
         {
-            return _context.Budgets.Any(e => e.id == id);
+            return _context.Budgets.Any(e => e.BudgetId == id);
         }
     }
 }

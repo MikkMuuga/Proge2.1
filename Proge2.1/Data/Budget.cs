@@ -5,7 +5,7 @@ namespace Proge2._1.Data
     public class Budget
     {
         [Required]
-        public int id { get; set; }
+        public int BudgetId { get; set; }
         [Required]
         [StringLength(55)]
         public string client { get; set; }
