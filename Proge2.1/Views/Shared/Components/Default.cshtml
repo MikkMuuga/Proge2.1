@@ -1,5 +1,5 @@
-﻿@model PagedResultBase
-@using Proge2._1.Data
+﻿@page
+@model PagedResultBase
 @{
     var urlTemplate = Url.Action() + "?page={0}";
     var request = ViewContext.HttpContext.Request;
@@ -42,3 +42,4 @@
         }
     </div>
 </div>
+}
