@@ -19,9 +19,9 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Materials
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page, int pageSize)
         {
-            return View(await _context.Materials.ToListAsync());
+            return View(await _context.Budgets.GetPagedAsync(page, pageSize));
         }
 
         // GET: Materials/Details/5

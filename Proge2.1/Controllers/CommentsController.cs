@@ -19,9 +19,9 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Comments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page, int pageSize)
         {
-            return View(await _context.Comments.ToListAsync());
+            return View(await _context.Budgets.GetPagedAsync(page, pageSize));
         }
 
         // GET: Comments/Details/5
