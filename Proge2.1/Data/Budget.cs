@@ -8,7 +8,7 @@ namespace Proge2._1.Data
         public int BudgetId { get; set; }
         [Required]
         [StringLength(55)]
-        public string Client { get; set; }
+        public required string Client { get; set; }
         [Required]
         [StringLength(55)]
         public DateTime Date { get; set; }
