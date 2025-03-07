@@ -12,14 +12,40 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact)
+            </th>
+
+
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
             <tr>
                 <td>
-                <th>Title</th>
+                <th>
+                        @Html.DisplayNameFor(model => model.CustomerId)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                        @Html.DisplayNameFor(model => model.Contact)
+                </th>
+
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CustomerId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.CustomerId">Details</a> |
@@ -29,4 +55,4 @@
 }
     </tbody>
 </table>
-@(await Component.InvokeAsync<PagerViewComponent>(Model))
+

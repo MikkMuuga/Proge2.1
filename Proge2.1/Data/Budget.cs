@@ -8,10 +8,10 @@ namespace Proge2._1.Data
         public int BudgetId { get; set; }
         [Required]
         [StringLength(55)]
-        public string client { get; set; }
+        public string Client { get; set; }
         [Required]
         [StringLength(55)]
-        public DateTime date { get; set; }
+        public DateTime Date { get; set; }
         public decimal ServiceCost { get; set; }
         public decimal TotalCost { get; set; }
     }

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Proge2._1.Data.Services>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.transportation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PanelProduction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.montage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.transportation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelProduction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.montage)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ServiceId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ServiceId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ServiceId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

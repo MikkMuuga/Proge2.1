@@ -10,9 +10,10 @@ namespace Proge2._1.Data
         [StringLength(55)]
         public string Unit { get; set; }
         [Required]
-        public decimal price { get; set; }
+        [StringLength(55)]
+        public decimal Price { get; set; }
 
-        public string seller { get; set; }
+        public string Seller { get; set; }
 
     }
 }
