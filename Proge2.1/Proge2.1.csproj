@@ -8,10 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_WebToolingArtifacts Remove="properties\serviceDependencies.json" />
+    <_WebToolingArtifacts Remove="properties\serviceDependencies.local.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="properties\serviceDependencies.json" />
+    <Content Include="properties\serviceDependencies.local.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\" />
-    <Folder Include="wwwroot\assets\Corporate\css\themes\" />
+    <Folder Include="wwwroot\assets\Corporate\img\" />
+    <Folder Include="wwwroot\assets\Corporate\scripts\" />
+    <Folder Include="wwwroot\assets\pages\img\" />
+    <Folder Include="wwwroot\assets\pages\scripts\" />
     <Folder Include="wwwroot\assets\plugins\" />
-    <Folder Include="wwwroot\assets\pages\" />
   </ItemGroup>
 
 	<ItemGroup>

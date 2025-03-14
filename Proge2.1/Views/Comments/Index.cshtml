@@ -22,7 +22,6 @@
                 @Html.DisplayNameFor(model => model.User)
             </th>
 
-
         </tr>
     </thead>
     <tbody>
@@ -50,3 +49,4 @@
 }
     </tbody>
 </table>
+@(await Component.InvokeAsync<PagerViewComponent>(Model))
