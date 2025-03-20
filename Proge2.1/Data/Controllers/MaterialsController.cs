@@ -18,26 +18,9 @@ namespace Proge2._1.Controllers
             _context = context;
         }
 
-        // GET: Materials
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page, int pageSize)
         {
-            var materials = await _context.Materials
-                .OrderBy(m => m.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            var totalCount = await _context.Materials.CountAsync();
-
-            var model = new PaginationModel<Materials>
-            {
-                Items = materials,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalCount = totalCount
-            };
-
-            return View(model);
+            return View(await _context.Budgets.GetPagedAsync(page, pageSize));
         }
 
         // GET: Materials/Details/5
