@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Proge2._1.Data.Budget>
+﻿@model PagedResult<Proge2._1.Data.Budget>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,36 +13,36 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Client)
+               Client
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ServiceCost)
+                ServiceCost
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalCost)
+                TotalCost
             </th>
 
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Results) {
         <tr>
             <td>
-                <th>
-                        @Html.DisplayNameFor(model => model.Client)
-                </th>
-                <th>
-                        @Html.DisplayNameFor(model => model.Date)
-                </th>
-                <th>
-                        @Html.DisplayNameFor(model => model.ServiceCost)
-                </th>
-                <th>
-                        @Html.DisplayNameFor(model => model.TotalCost)
-                </th>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Client)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.ServiceCost)
+                </td>
+                <td>
+                        @Html.DisplayFor(modelItem => item.TotalCost)
+                </td>
 
             <td>
                     <a asp-action="Edit" asp-route-id="@item.BudgetId">Edit</a> |
@@ -53,4 +53,3 @@
 }
     </tbody>
 </table>
-@(await Component.InvokeAsync<PagerViewComponent>(Model))
