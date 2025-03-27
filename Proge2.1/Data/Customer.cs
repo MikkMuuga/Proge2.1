@@ -10,10 +10,6 @@ namespace Proge2._1.Data
         [Required]
         [StringLength(55)]
         public string Name { get; set; }
-
-
-        [Required]
-        [StringLength(55)]
         public DateTime Date { get; set; }
 
         [Required]

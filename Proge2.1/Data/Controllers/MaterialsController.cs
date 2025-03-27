@@ -19,25 +19,9 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Materials
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page, int pageSize)
         {
-            var materials = await _context.Materials
-                .OrderBy(m => m.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            var totalCount = await _context.Materials.CountAsync();
-
-            var model = new PaginationModel<Materials>
-            {
-                Items = materials,
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalCount = totalCount
-            };
-
-            return View(model);
+            return View(await _context.Materials.GetPagedAsync(page, pageSize));
         }
 
         // GET: Materials/Details/5
@@ -69,7 +53,7 @@ namespace Proge2._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Unit,price,seller")] Materials materials)
+        public async Task<IActionResult> Create( Materials materials)
         {
             if (ModelState.IsValid)
             {
@@ -101,7 +85,7 @@ namespace Proge2._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Unit,price,seller")] Materials materials)
+        public async Task<IActionResult> Edit(int id, Materials materials)
         {
             if (id != materials.Id)
             {

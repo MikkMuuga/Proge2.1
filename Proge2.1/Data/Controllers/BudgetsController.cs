@@ -48,34 +48,28 @@ namespace Proge2._1.Controllers
             return View();
         }
 
-        // POST: Budgets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,client,date,ServiceCost,TotalCost")] Budget budget)
+        public async Task<IActionResult> Create(Budget budget)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(budget);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(budget);
-        }
+                try
+                {
+                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Budgets ON");
+                    _context.Budgets.Add(budget);
+                    await _context.SaveChangesAsync();
+                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Budgets OFF");
 
-        // GET: Budgets/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var budget = await _context.Budgets.FindAsync(id);
-            if (budget == null)
-            {
-                return NotFound();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Handle any errors
+                    ModelState.AddModelError("", "Error saving budget: " + ex.Message);
+                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Budgets OFF"); // Ensure it's turned off
+                    return View(budget);
+                }
             }
             return View(budget);
         }
@@ -85,7 +79,7 @@ namespace Proge2._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,client,date,ServiceCost,TotalCost")] Budget budget)
+        public async Task<IActionResult> Edit(int id, Budget budget)
         {
             if (id != budget.BudgetId)
             {
