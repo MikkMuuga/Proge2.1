@@ -21,7 +21,7 @@ namespace Proge2._1.Controllers
         // GET: Customers
         public async Task<IActionResult> Index(int page, int pageSize)
         {
-            return View(await _context.Budgets.GetPagedAsync(page, pageSize));
+            return View(await _context.Customers.GetPagedAsync(page, pageSize));
         }
 
         // GET: Customers/Details/5

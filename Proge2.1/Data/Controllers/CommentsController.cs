@@ -21,7 +21,7 @@ namespace Proge2._1.Controllers
         // GET: Comments
         public async Task<IActionResult> Index(int page, int pageSize)
         {
-            return View(await _context.Budgets.GetPagedAsync(page, pageSize));
+            return View(await _context.Comments.GetPagedAsync(page, pageSize));
         }
 
         // GET: Comments/Details/5
@@ -33,7 +33,7 @@ namespace Proge2._1.Controllers
             }
 
             var comment = await _context.Comments
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
@@ -87,7 +87,7 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Content")] Comment comment)
         {
-            if (id != comment.Id)
+            if (id != comment.CommentId)
             {
                 return NotFound();
             }
@@ -101,7 +101,7 @@ namespace Proge2._1.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommentExists(comment.Id))
+                    if (!CommentExists(comment.CommentId))
                     {
                         return NotFound();
                     }
@@ -124,7 +124,7 @@ namespace Proge2._1.Controllers
             }
 
             var comment = await _context.Comments
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CommentId == id);
             if (comment == null)
             {
                 return NotFound();
@@ -150,7 +150,7 @@ namespace Proge2._1.Controllers
 
         private bool CommentExists(int id)
         {
-            return _context.Comments.Any(e => e.Id == id);
+            return _context.Comments.Any(e => e.CommentId == id);
         }
     }
 }

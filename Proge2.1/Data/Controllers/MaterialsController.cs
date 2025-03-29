@@ -20,7 +20,7 @@ namespace Proge2._1.Controllers
 
         public async Task<IActionResult> Index(int page, int pageSize)
         {
-            return View(await _context.Budgets.GetPagedAsync(page, pageSize));
+            return View(await _context.Materials.GetPagedAsync(page, pageSize));
         }
 
         // GET: Materials/Details/5
@@ -52,7 +52,7 @@ namespace Proge2._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Unit,price,seller")] Materials materials)
+        public async Task<IActionResult> Create( Materials materials)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace Proge2._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Unit,price,seller")] Materials materials)
+        public async Task<IActionResult> Edit(int id, Materials materials)
         {
             if (id != materials.Id)
             {
