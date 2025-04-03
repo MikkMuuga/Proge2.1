@@ -24,29 +24,28 @@
             <th>
                 TotalCost
             </th>
-
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Results) {
         <tr>
             <td>
-                        @Html.DisplayFor(modelItem => item.Client)
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.ServiceCost)
-                </td>
-                <td>
-                        @Html.DisplayFor(modelItem => item.TotalCost)
-                </td>
+                 @Html.DisplayFor(modelItem => item.Client)
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.ServiceCost)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalCost)
+            </td>
 
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.BudgetId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.BudgetId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.BudgetId">Delete</a>
+                 <a asp-action="Edit" asp-route-id="@item.BudgetId">Edit</a> |
+                 <a asp-action="Details" asp-route-id="@item.BudgetId">Details</a> |
+                 <a asp-action="Delete" asp-route-id="@item.BudgetId">Delete</a>
             </td>
         </tr>
 }

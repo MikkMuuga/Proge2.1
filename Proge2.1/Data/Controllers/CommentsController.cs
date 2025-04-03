@@ -53,7 +53,7 @@ namespace Proge2._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Content")] Comment comment)
+        public async Task<IActionResult> Create(Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Proge2._1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Content")] Comment comment)
+        public async Task<IActionResult> Edit(int id, Comment comment)
         {
             if (id != comment.Id)
             {
