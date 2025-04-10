@@ -16,5 +16,6 @@ namespace Proge2._1.Data
         public DbSet<Services> Services { get; set; }
         public DbSet<Machines> Machines { get; set; }
         public DbSet<Comment> Comments { get; set; }
+
     }
 }

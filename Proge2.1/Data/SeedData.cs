@@ -1,54 +1,39 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Proge2_1.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
 using Proge2._1.Data;
 
-public static class SeedData
+namespace Proge2_1.Data
 {
-    public static void Generate(DbContext context)
+    public static class SeedData
     {
-        // Check if the Materials table already has data
-        if (!context.Set<Material>().Any())
+        public static void Generate(ApplicationDbContext context)
         {
-            var materials = new List<Material>
+            // Check if there's any data in the database already
+            if (context.Customers.Any())
             {
-                new Material { Unit = "Cement Bag", Price = 10.50m, Seller = "Mip" },
-                new Material { Unit = "Steel Rod", Price = 25.30m, Seller = "Pim" },
-                new Material { Unit = "Bricks (100 pcs)", Price = 15.40m, Seller = "Tim" },
-                new Material { Unit = "Sand (1 ton)", Price = 50.50m, Seller = "John" }
+                return;
+            }
+
+            // Add sample customers
+            var customer1 = new Customer
+            {
+                Name = "John Smith",
+                Date = DateTime.Now,
+                Contact = "john.smith@example.com"
             };
 
+            var customer2 = new Customer
+            {
+                Name = "Mary Johnson",
+                Date = DateTime.Now,
+                Contact = "+372 5555 1234"
+            };
 
-            context.Set<Material>().AddRange(materials);
+            context.Customers.Add(customer1);
+            context.Customers.Add(customer2);
             context.SaveChanges();
-        }
-    }
-}
-public class Material
-{
-    public int Id { get; set; }
-    public string Unit { get; set; } 
-    public decimal Price { get; set; } 
-    public string Seller { get; set; } 
-}
-
-public class YourDbContext : DbContext
-{
-    public DbSet<Material> Materials { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("YourConnectionStringHere");
-    }
-}
-class Program
-{
-    static void Main(string[] args)
-    {
-
-        using (var context = new YourDbContext())
-        {
-            SeedData.Generate(context);
         }
     }
 }
