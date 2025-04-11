@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
+using Microsoft.Extensions.Logging;
 using Proge2_1.Data;
 
 namespace Proge2._1
@@ -64,33 +65,17 @@ namespace Proge2._1
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
 
-            app.Run();
-            // ... (previous builder configuration code remains the same)
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseMigrationsEndPoint();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
-
+            // Database seeding (only in Debug mode)
 #if DEBUG
-            // Seed data only in DEBUG configuration
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 try
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
-
-                    // Apply migrations (creates DB if doesn't exist)
+                    // Ensure database is created and migrated
                     context.Database.Migrate();
-
-                    // Seed initial data
+                    // Seed the database
                     SeedData.Generate(context);
                 }
                 catch (Exception ex)
@@ -101,7 +86,7 @@ namespace Proge2._1
             }
 #endif
 
-            // ... (rest of your middleware pipeline)
+            app.Run();
         }
     }
 }
