@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proge2._1.Data;
+using Proge2._1.Migrations;
+using Proge2._1.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Controllers
 {
     public class BudgetsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IBudgetService _budgetService;
 
-        public BudgetsController(ApplicationDbContext context)
+        public BudgetsController(IBudgetService budgetService)
         {
-            _context = context;
+            _budgetService = budgetService;
         }
 
         // GET: Budgets
-        public async Task<IActionResult> Index(int page, int pageSize)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _context.Budgets.GetPagedAsync(page, pageSize));
+            var budgets = _budgetService.GetAllBudgets();
+            // Implementeerime lihtsa lehekülgede jagamise
+            var pagedBudgets = budgets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalItems = budgets.Count();
+
+            return View(pagedBudgets);
         }
 
         // GET: Budgets/Details/5
@@ -32,8 +36,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var budget = await _context.Budgets
-                .FirstOrDefaultAsync(m => m.BudgetId == id);
+            var budget = _budgetService.GetBudgetById(id.Value);
             if (budget == null)
             {
                 return NotFound();
@@ -56,27 +59,34 @@ namespace Proge2._1.Controllers
             {
                 try
                 {
-                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Budgets ON");
-                    _context.Budgets.Add(budget);
-                    await _context.SaveChangesAsync();
-                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Budgets OFF");
-
+                    _budgetService.AddBudget(budget);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
-                    // Handle any errors
                     ModelState.AddModelError("", "Error saving budget: " + ex.Message);
-                    await _context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT Budgets OFF"); // Ensure it's turned off
                     return View(budget);
                 }
             }
             return View(budget);
         }
 
-        // POST: Budgets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // GET: Budgets/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var budget = _budgetService.GetBudgetById(id.Value);
+            if (budget == null)
+            {
+                return NotFound();
+            }
+            return View(budget);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Budget budget)
@@ -90,10 +100,10 @@ namespace Proge2._1.Controllers
             {
                 try
                 {
-                    _context.Update(budget);
-                    await _context.SaveChangesAsync();
+                    _budgetService.UpdateBudget(budget);
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
                     if (!BudgetExists(budget.BudgetId))
                     {
@@ -104,7 +114,6 @@ namespace Proge2._1.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             return View(budget);
         }
@@ -117,8 +126,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var budget = await _context.Budgets
-                .FirstOrDefaultAsync(m => m.BudgetId == id);
+            var budget = _budgetService.GetBudgetById(id.Value);
             if (budget == null)
             {
                 return NotFound();
@@ -132,19 +140,13 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var budget = await _context.Budgets.FindAsync(id);
-            if (budget != null)
-            {
-                _context.Budgets.Remove(budget);
-            }
-
-            await _context.SaveChangesAsync();
+            _budgetService.DeleteBudget(id);
             return RedirectToAction(nameof(Index));
         }
 
         private bool BudgetExists(int id)
         {
-            return _context.Budgets.Any(e => e.BudgetId == id);
+            return _budgetService.GetBudgetById(id) != null;
         }
     }
 }

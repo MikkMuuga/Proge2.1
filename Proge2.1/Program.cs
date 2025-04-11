@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
 using Microsoft.Extensions.Logging;
+using Proge2._1.Services.Interfaces;
+using Proge2._1.Services;
 using Proge2_1.Data;
 
 namespace Proge2._1
@@ -32,6 +34,11 @@ namespace Proge2._1
 
                 // Add MVC Controllers and Razor Pages
                 builder.Services.AddControllersWithViews();
+
+                // Register your custom services here
+                builder.Services.AddScoped<IBudgetService, BudgetService>();
+                // Add other services as needed
+                // builder.Services.AddScoped<IAnotherService, AnotherService>();
             }
             catch (Exception ex)
             {
