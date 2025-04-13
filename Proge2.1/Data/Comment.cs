@@ -5,6 +5,7 @@ namespace Proge2._1.Data
 {
     public class Comment
     {
+        [Required]
         public int CommentId { get; set; }
 
         [Required]
