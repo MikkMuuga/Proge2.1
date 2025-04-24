@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
+using Proge2._1.Services.Interfaces;
 
-namespace Proge2._1.Data.Controllers
+namespace Proge2._1.Controllers
 {
     public class MachinesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IMachineService _machineService;
 
-        public MachinesController(ApplicationDbContext context)
+        public MachinesController(IMachineService machineService)
         {
-            _context = context;
+            _machineService = machineService;
         }
 
         // GET: Machines
         public async Task<IActionResult> Index(int page, int pageSize)
         {
-            return View(await _context.Machines.GetPagedAsync(page, pageSize));
+            return View(await _machineService.GetPagedMachines(page, pageSize));
         }
 
         // GET: Machines/Details/5
@@ -32,14 +28,13 @@ namespace Proge2._1.Data.Controllers
                 return NotFound();
             }
 
-            var machines = await _context.Machines
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (machines == null)
+            var machine = await _machineService.GetMachineById(id.Value);
+            if (machine == null)
             {
                 return NotFound();
             }
 
-            return View(machines);
+            return View(machine);
         }
 
         // GET: Machines/Create
@@ -49,19 +44,16 @@ namespace Proge2._1.Data.Controllers
         }
 
         // POST: Machines/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,Workers,Supervision,CostOfMachines")] Machines machines)
+        public async Task<IActionResult> Create([Bind("id,Workers,Supervision,CostOfMachines")] Machines machine)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(machines);
-                await _context.SaveChangesAsync();
+                await _machineService.AddMachine(machine);
                 return RedirectToAction(nameof(Index));
             }
-            return View(machines);
+            return View(machine);
         }
 
         // GET: Machines/Edit/5
@@ -72,22 +64,20 @@ namespace Proge2._1.Data.Controllers
                 return NotFound();
             }
 
-            var machines = await _context.Machines.FindAsync(id);
-            if (machines == null)
+            var machine = await _machineService.GetMachineById(id.Value);
+            if (machine == null)
             {
                 return NotFound();
             }
-            return View(machines);
+            return View(machine);
         }
 
         // POST: Machines/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,Workers,Supervision,CostOfMachines")] Machines machines)
+        public async Task<IActionResult> Edit(int id, [Bind("id,Workers,Supervision,CostOfMachines")] Machines machine)
         {
-            if (id != machines.id)
+            if (id != machine.id)
             {
                 return NotFound();
             }
@@ -96,23 +86,19 @@ namespace Proge2._1.Data.Controllers
             {
                 try
                 {
-                    _context.Update(machines);
-                    await _context.SaveChangesAsync();
+                    await _machineService.UpdateMachine(machine);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
-                    if (!MachinesExists(machines.id))
+                    if (!await _machineService.MachineExists(machine.id))
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(machines);
+            return View(machine);
         }
 
         // GET: Machines/Delete/5
@@ -123,14 +109,13 @@ namespace Proge2._1.Data.Controllers
                 return NotFound();
             }
 
-            var machines = await _context.Machines
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (machines == null)
+            var machine = await _machineService.GetMachineById(id.Value);
+            if (machine == null)
             {
                 return NotFound();
             }
 
-            return View(machines);
+            return View(machine);
         }
 
         // POST: Machines/Delete/5
@@ -138,19 +123,8 @@ namespace Proge2._1.Data.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var machines = await _context.Machines.FindAsync(id);
-            if (machines != null)
-            {
-                _context.Machines.Remove(machines);
-            }
-
-            await _context.SaveChangesAsync();
+            await _machineService.DeleteMachine(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MachinesExists(int id)
-        {
-            return _context.Machines.Any(e => e.id == id);
         }
     }
 }

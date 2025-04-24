@@ -2,6 +2,7 @@
 using Proge2._1.Data;
 using Proge2._1.Migrations;
 using Proge2._1.Services.Interfaces;
+using Budget = Proge2._1.Data.Budget;
 using System.Threading.Tasks;
 
 namespace Proge2._1.Controllers

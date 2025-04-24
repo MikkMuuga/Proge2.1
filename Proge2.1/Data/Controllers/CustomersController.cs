@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
+using Proge2._1.Services;
+using Proge2._1.Services.Interfaces;
 
 namespace Proge2._1.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ICustomerService _customerService;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomersController(ICustomerService customerService)
         {
-            _context = context;
+            _customerService = customerService;
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(int page, int pageSize)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _context.Customers.GetPagedAsync(page, pageSize));
+            return View(await _customerService.GetPagedCustomers(page, pageSize));
         }
 
         // GET: Customers/Details/5
@@ -32,8 +29,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            var customer = await _customerService.GetCustomerById(id.Value);
             if (customer == null)
             {
                 return NotFound();
@@ -49,16 +45,13 @@ namespace Proge2._1.Controllers
         }
 
         // POST: Customers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,Name,Date,Contact")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                await _customerService.AddCustomer(customer);
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -72,7 +65,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _customerService.GetCustomerById(id.Value);
             if (customer == null)
             {
                 return NotFound();
@@ -81,11 +74,9 @@ namespace Proge2._1.Controllers
         }
 
         // POST: Customers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Name,Date,Contact")] Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -96,19 +87,15 @@ namespace Proge2._1.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    await _customerService.UpdateCustomer(customer);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
-                    if (!CustomerExists(customer.CustomerId))
+                    if (!await _customerService.CustomerExists(customer.CustomerId))
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -123,8 +110,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            var customer = await _customerService.GetCustomerById(id.Value);
             if (customer == null)
             {
                 return NotFound();
@@ -138,19 +124,8 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
-            }
-
-            await _context.SaveChangesAsync();
+            await _customerService.DeleteCustomer(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.CustomerId == id);
         }
     }
 }

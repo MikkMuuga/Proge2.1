@@ -13,41 +13,37 @@ namespace Proge2._1
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             try
             {
                 // Load and validate the connection string
                 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
                 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(connectionString));
                 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
                 // Configure Identity
                 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = true;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
                 // Add MVC Controllers and Razor Pages
                 builder.Services.AddControllersWithViews();
 
-                // Register your custom services here
+                // Register all services for data classes
                 builder.Services.AddScoped<IBudgetService, BudgetService>();
-                // Add other services as needed
-                // builder.Services.AddScoped<IAnotherService, AnotherService>();
+                builder.Services.AddScoped<ICommentService, CommentService>();
+                // Add this to your service configuration
+                builder.Services.AddScoped<ICustomerService, CustomerService>();
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Startup configuration error: {ex.Message}");
                 throw; // Rethrow to halt application startup if configuration fails
             }
-
             var app = builder.Build();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -58,20 +54,15 @@ namespace Proge2._1
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts(); // Enforce HSTS for production environments
             }
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
             // Database seeding (only in Debug mode)
 #if DEBUG
             using (var scope = app.Services.CreateScope())
@@ -92,7 +83,6 @@ namespace Proge2._1
                 }
             }
 #endif
-
             app.Run();
         }
     }

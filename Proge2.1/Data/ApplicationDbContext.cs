@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Proge2._1.Controllers;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Proge2._1.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        internal object TodoLists;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -16,6 +19,5 @@ namespace Proge2._1.Data
         public DbSet<Services> Services { get; set; }
         public DbSet<Machines> Machines { get; set; }
         public DbSet<Comment> Comments { get; set; }
-
     }
 }
