@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
+using Microsoft.Extensions.Logging;
+using Proge2._1.Services.Interfaces;
+using Proge2._1.Services;
+using Proge2_1.Data;
 
 namespace Proge2._1
 {
@@ -30,6 +34,11 @@ namespace Proge2._1
 
                 // Add MVC Controllers and Razor Pages
                 builder.Services.AddControllersWithViews();
+
+                // Register your custom services here
+                builder.Services.AddScoped<IBudgetService, BudgetService>();
+                // Add other services as needed
+                // builder.Services.AddScoped<IAnotherService, AnotherService>();
             }
             catch (Exception ex)
             {
@@ -62,6 +71,27 @@ namespace Proge2._1
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
+
+            // Database seeding (only in Debug mode)
+#if DEBUG
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetRequiredService<ApplicationDbContext>();
+                    // Ensure database is created and migrated
+                    context.Database.Migrate();
+                    // Seed the database
+                    SeedData.Generate(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while seeding the database.");
+                }
+            }
+#endif
 
             app.Run();
         }

@@ -10,7 +10,6 @@ namespace Proge2._1.Data
         [StringLength(55)]
         public required string Client { get; set; }
         [Required]
-        [StringLength(55)]
         public DateTime Date { get; set; }
         public decimal ServiceCost { get; set; }
         public decimal TotalCost { get; set; }
