@@ -19,8 +19,9 @@ namespace Proge2._1.Data
     public class PagedResult<T> : PagedResultBase
     {
         public IList<T> Results { get; set; } = new List<T>();
-        public List<Comment> Items { get; internal set; }
+        public List<T> Items { get; internal set; }
         public int Page { get; internal set; }
+        public int TotalItems { get; internal set; }
     }
 
     // Fix the paging extensions

@@ -36,6 +36,9 @@ namespace Proge2._1
                 builder.Services.AddScoped<ICommentService, CommentService>();
                 // Add this to your service configuration
                 builder.Services.AddScoped<ICustomerService, CustomerService>();
+                builder.Services.AddScoped<IMachineService, MachineService>();
+                builder.Services.AddScoped<IMaterialService, MaterialService>();
+                builder.Services.AddScoped<IServicessService, ServiceService>();
 
             }
             catch (Exception ex)

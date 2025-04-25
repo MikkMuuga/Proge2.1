@@ -16,13 +16,23 @@ namespace Proge2._1.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Machines>> GetPagedMachines(int page, int pageSize)
+        public async Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize)
         {
-            return await _context.Machines
+            var totalItems = await _context.Machines.CountAsync();
+
+            var items = await _context.Machines
                 .OrderBy(m => m.id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            return new PagedResult<Machines>
+            {
+                Items = items,
+                PageNumber = page,
+                PageSize = pageSize,
+                TotalItems = totalItems
+            };
         }
 
         public async Task<Machines> GetMachineById(int id)
@@ -55,6 +65,11 @@ namespace Proge2._1.Services
         public async Task<bool> MachineExists(int id)
         {
             return await _context.Machines.AnyAsync(e => e.id == id);
+        }
+
+        public interface IMachineService
+        {
+            Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize);
         }
     }
 }

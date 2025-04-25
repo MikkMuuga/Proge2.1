@@ -1,30 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
+using Proge2._1.Services.Interfaces;
 
-namespace Proge2._1.Data.Controllers
+namespace Proge2._1.Controllers
 {
     public class ServicesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IServiceService _serviceService;
 
-        public ServicesController(ApplicationDbContext context)
+        public ServicesController(IServiceService serviceService)
         {
-            _context = context;
+            _serviceService = serviceService;
         }
 
-        // GET: Services
-        public async Task<IActionResult> Index(int page, int pageSize)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _context.Services.GetPagedAsync(page, pageSize));
+            return View(await _serviceService.GetPagedServices(page, pageSize));
         }
 
-        // GET: Services/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +26,32 @@ namespace Proge2._1.Data.Controllers
                 return NotFound();
             }
 
-            var services = await _context.Services
-                .FirstOrDefaultAsync(m => m.ServiceId == id);
-            if (services == null)
+            var service = await _serviceService.GetServiceById(id.Value);
+            if (service == null)
             {
                 return NotFound();
             }
 
-            return View(services);
+            return View(service);
         }
 
-        // GET: Services/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Services/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ServiceId,transportation,PanelProduction,montage")] Services services)
+        public async Task<IActionResult> Create([Bind("ServiceId,transportation,PanelProduction,montage")] Servicess service)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(services);
-                await _context.SaveChangesAsync();
+                await _serviceService.AddService(service);
                 return RedirectToAction(nameof(Index));
             }
-            return View(services);
+            return View(service);
         }
 
-        // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +59,19 @@ namespace Proge2._1.Data.Controllers
                 return NotFound();
             }
 
-            var services = await _context.Services.FindAsync(id);
-            if (services == null)
+            var service = await _serviceService.GetServiceById(id.Value);
+            if (service == null)
             {
                 return NotFound();
             }
-            return View(services);
+            return View(service);
         }
 
-        // POST: Services/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ServiceId,transportation,PanelProduction,montage")] Services services)
+        public async Task<IActionResult> Edit(int id, [Bind("ServiceId,transportation,PanelProduction,montage")] Servicess service)
         {
-            if (id != services.ServiceId)
+            if (id != service.ServiceId)
             {
                 return NotFound();
             }
@@ -96,26 +80,21 @@ namespace Proge2._1.Data.Controllers
             {
                 try
                 {
-                    _context.Update(services);
-                    await _context.SaveChangesAsync();
+                    await _serviceService.UpdateService(service);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
-                    if (!ServicesExists(services.ServiceId))
+                    if (!await _serviceService.ServiceExists(service.ServiceId))
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(services);
+            return View(service);
         }
 
-        // GET: Services/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,34 +102,26 @@ namespace Proge2._1.Data.Controllers
                 return NotFound();
             }
 
-            var services = await _context.Services
-                .FirstOrDefaultAsync(m => m.ServiceId == id);
-            if (services == null)
+            var service = await _serviceService.GetServiceById(id.Value);
+            if (service == null)
             {
                 return NotFound();
             }
 
-            return View(services);
+            return View(service);
         }
 
-        // POST: Services/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var services = await _context.Services.FindAsync(id);
-            if (services != null)
-            {
-                _context.Services.Remove(services);
-            }
-
-            await _context.SaveChangesAsync();
+            await _serviceService.DeleteService(id);
             return RedirectToAction(nameof(Index));
         }
+    }
 
-        private bool ServicesExists(int id)
-        {
-            return _context.Services.Any(e => e.ServiceId == id);
-        }
+    public class Servicess
+    {
+        internal int ServiceId;
     }
 }

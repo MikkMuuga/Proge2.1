@@ -65,7 +65,7 @@ namespace Proge2._1.Services
 
         public async Task<bool> CommentExists(int id)
         {
-            return await _context.Comments.AnyAsync(e => e.Id == id);
+            return await _context.Comments.AnyAsync(e => e.CommentId == id);
         }
     }
 }

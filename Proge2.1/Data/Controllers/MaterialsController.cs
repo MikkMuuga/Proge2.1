@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
+using Proge2._1.Services.Interfaces;
 
 namespace Proge2._1.Controllers
 {
     public class MaterialsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IMaterialService _materialService;
 
-        public MaterialsController(ApplicationDbContext context)
+        public MaterialsController(IMaterialService materialService)
         {
-            _context = context;
+            _materialService = materialService;
         }
 
-        public async Task<IActionResult> Index(int page, int pageSize)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _context.Materials.GetPagedAsync(page, pageSize));
+            return View(await _materialService.GetPagedMaterials(page, pageSize));
         }
 
-        // GET: Materials/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -31,39 +26,32 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var materials = await _context.Materials
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (materials == null)
+            var material = await _materialService.GetMaterialById(id.Value);
+            if (material == null)
             {
                 return NotFound();
             }
 
-            return View(materials);
+            return View(material);
         }
 
-        // GET: Materials/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Materials/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( Materials materials)
+        public async Task<IActionResult> Create([Bind("Id,Unit,Price,Seller")] Materials material)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(materials);
-                await _context.SaveChangesAsync();
+                await _materialService.AddMaterial(material);
                 return RedirectToAction(nameof(Index));
             }
-            return View(materials);
+            return View(material);
         }
 
-        // GET: Materials/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -71,22 +59,19 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var materials = await _context.Materials.FindAsync(id);
-            if (materials == null)
+            var material = await _materialService.GetMaterialById(id.Value);
+            if (material == null)
             {
                 return NotFound();
             }
-            return View(materials);
+            return View(material);
         }
 
-        // POST: Materials/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Materials materials)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Unit,Price,Seller")] Materials material)
         {
-            if (id != materials.Id)
+            if (id != material.Id)
             {
                 return NotFound();
             }
@@ -95,26 +80,21 @@ namespace Proge2._1.Controllers
             {
                 try
                 {
-                    _context.Update(materials);
-                    await _context.SaveChangesAsync();
+                    await _materialService.UpdateMaterial(material);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch
                 {
-                    if (!MaterialsExists(materials.Id))
+                    if (!await _materialService.MaterialExists(material.Id))
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(materials);
+            return View(material);
         }
 
-        // GET: Materials/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -122,35 +102,21 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var materials = await _context.Materials
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (materials == null)
+            var material = await _materialService.GetMaterialById(id.Value);
+            if (material == null)
             {
                 return NotFound();
             }
 
-            return View(materials);
+            return View(material);
         }
 
-        // POST: Materials/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var materials = await _context.Materials.FindAsync(id);
-            if (materials != null)
-            {
-                _context.Materials.Remove(materials);
-            }
-
-            await _context.SaveChangesAsync();
+            await _materialService.DeleteMaterial(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool MaterialsExists(int id)
-        {
-            return _context.Materials.Any(e => e.Id == id);
         }
     }
 }
-

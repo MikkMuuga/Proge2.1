@@ -15,9 +15,13 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Machines
-        public async Task<IActionResult> Index(int page, int pageSize)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _machineService.GetPagedMachines(page, pageSize));
+            if (page < 1) page = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var result = await _machineService.GetPagedMachines(page, pageSize);
+            return View(result);
         }
 
         // GET: Machines/Details/5
