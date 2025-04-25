@@ -18,7 +18,6 @@ namespace Proge2._1.Controllers
             _context = context;
         }
 
-        // GET: Materials
         public async Task<IActionResult> Index(int page, int pageSize)
         {
             return View(await _context.Materials.GetPagedAsync(page, pageSize));
