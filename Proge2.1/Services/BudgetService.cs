@@ -51,35 +51,10 @@ namespace Proge2._1.Services
         {
             return serviceCost * 1.2m; // 20% käibemaks
         }
-
-        IEnumerable<Budget> IBudgetService.GetAllBudgets()
+        public decimal CalculateTotalCost(Budget budget)
         {
-            throw new NotImplementedException();
+            return CalculateTotalCost(budget.ServiceCost);
         }
 
-        Budget IBudgetService.GetBudgetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IBudgetService.AddBudget(Budget budget)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IBudgetService.UpdateBudget(Budget budget)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IBudgetService.DeleteBudget(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        decimal IBudgetService.CalculateTotalCost(Budget budget)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
