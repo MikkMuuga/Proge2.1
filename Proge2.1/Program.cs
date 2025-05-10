@@ -34,7 +34,6 @@ namespace Proge2._1
                 // Register all services for data classes
                 builder.Services.AddScoped<IBudgetService, BudgetService>();
                 builder.Services.AddScoped<ICommentService, CommentService>();
-                // Add this to your service configuration
                 builder.Services.AddScoped<ICustomerService, CustomerService>();
                 builder.Services.AddScoped<IMachineService, MachineService>();
                 builder.Services.AddScoped<IMaterialService, MaterialService>();

@@ -20,7 +20,7 @@ namespace Proge2._1.Controllers
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
             var budgets = _budgetService.GetAllBudgets();
-            // Implementeerime lihtsa lehekülgede jagamise
+
             var pagedBudgets = budgets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;

@@ -1,5 +1,5 @@
 ﻿using Proge2._1.Data;
-using Proge2._1.Services.Interfaces;
+using Proge2._1.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

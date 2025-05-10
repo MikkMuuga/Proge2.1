@@ -9,9 +9,9 @@ namespace Proge2._1.Controllers
     {
         private readonly IServiceService _serviceService;
 
-        public ServicesController(IServiceService serviceService)
+        public ServicesController(IServiceService ServiceService)
         {
-            _serviceService = serviceService;
+            _serviceService = ServiceService;           
         }
 
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
