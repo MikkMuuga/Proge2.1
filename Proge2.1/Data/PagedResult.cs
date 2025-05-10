@@ -11,5 +11,8 @@ namespace Proge2._1.Data
         public int RowCount { get; internal set; }
         public int PageCount { get; internal set; }
         public List<object> Results { get; internal set; }
+        public int TotalItems { get; set; }
+        public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / PageSize);
+
     }
 }

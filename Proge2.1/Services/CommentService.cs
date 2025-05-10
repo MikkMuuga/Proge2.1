@@ -1,4 +1,4 @@
-﻿// Services/CommentService.cs
+﻿
 using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
 using Proge2._1.Services.Interfaces;
@@ -29,10 +29,11 @@ namespace Proge2._1.Services
 
             return new PagedResult<Comment>
             {
-                Items = items,
-                TotalCount = totalCount,
-                Page = page,
-                PageSize = pageSize
+                Results = items,
+                TotalCount = totalCount,  // or RowCount
+                CurrentPage = page,
+                PageSize = pageSize,
+                PageCount = (int)Math.Ceiling((double)totalCount / pageSize)
             };
         }
 

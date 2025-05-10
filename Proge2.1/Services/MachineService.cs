@@ -28,10 +28,10 @@ namespace Proge2._1.Services
 
             return new PagedResult<Machines>
             {
-                Items = items,
-                PageNumber = page,
-                PageSize = pageSize,
-                TotalItems = totalItems
+                Results = items,          // Items → Results
+                CurrentPage = page,       // PageNumber → CurrentPage
+                PageSize = pageSize,      // (unchanged)
+                TotalCount = totalItems   // TotalItems → TotalCount (or RowCount)
             };
         }
 

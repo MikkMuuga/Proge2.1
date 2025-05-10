@@ -17,17 +17,31 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Budgets
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public IActionResult Index(int page = 1, int pageSize = 10)
         {
+<<<<<<< HEAD
             var budgets = _budgetService.GetAllBudgets();
 
             var pagedBudgets = budgets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalItems = budgets.Count();
+=======
+            var budgets = _budgetService.GetAllBudgets().ToList(); // Convert to List<Budget>
+>>>>>>> 57d118cc6edfe23adbcc8796d0b679af6a3ad6fe
 
-            return View(pagedBudgets);
+            var pagedResult = new PagedResult<Budget>
+            {
+                Items = budgets.Skip((page - 1) * pageSize).Take(pageSize),
+                TotalItems = budgets.Count,
+                PageCount = page,
+                PageSize = pageSize
+            };
+
+            return View(pagedResult);
         }
+
+
 
         // GET: Budgets/Details/5
         public async Task<IActionResult> Details(int? id)
