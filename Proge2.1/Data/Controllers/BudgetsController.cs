@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proge2._1.Data;
-using Proge2._1.Migrations;
 using Proge2._1.Services.Interfaces;
-using Budget = Proge2._1.Data.Budget;
+using BudgetModel = Proge2._1.Data.Budget;
 using System.Threading.Tasks;
 
 namespace Proge2._1.Controllers
@@ -22,12 +21,18 @@ namespace Proge2._1.Controllers
             var budgets = _budgetService.GetAllBudgets();
 
             var pagedBudgets = budgets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            ViewBag.CurrentPage = page;
-            ViewBag.PageSize = pageSize;
-            ViewBag.TotalItems = budgets.Count();
 
-            return View(pagedResult);
+            var pagedResult = new PagedResult<Budget>
+            {
+                Items = pagedBudgets,
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalItems = budgets.Count()
+            };
+
+            return View(pagedResult); 
         }
+
 
 
 

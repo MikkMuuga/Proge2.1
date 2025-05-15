@@ -5,14 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Proge2._1.Controllers;
+using Proge2._1.Services.Interfaces;
 
 namespace Proge2._1.Services
 {
-    public class ServiceService : IServicessService
+    public class ServicesService : IServicessService
     {
         private readonly ApplicationDbContext _context;
 
-        public ServiceService(ApplicationDbContext context)
+        public ServicesService(ApplicationDbContext context)
         {
             _context = context;
         }

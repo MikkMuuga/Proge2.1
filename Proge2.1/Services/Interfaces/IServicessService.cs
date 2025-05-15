@@ -2,13 +2,12 @@
 using Proge2._1.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Servicess = Proge2._1.Controllers.Servicess;
 
 namespace Proge2._1.Services.Interfaces
 {
-    public interface IServiceService
+    public interface IServicessService
     {
-        Task<IEnumerable<Servicess>> GetPagedServices(int page, int pageSize);
+        Task<PagedResult<Servicess>> GetPagedServices(int page, int pageSize);
         Task<Servicess> GetServiceById(int id);
         Task AddService(Servicess service);
         Task UpdateService(Servicess service);

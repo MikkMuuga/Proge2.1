@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Proge2._1.Services.Interfaces;
 using Proge2._1.Services;
 using Proge2_1.Data;
+using IServicessService = Proge2._1.Services.Interfaces.IServicessService;
 
 namespace Proge2._1
 {
@@ -37,7 +38,7 @@ namespace Proge2._1
                 builder.Services.AddScoped<ICustomerService, CustomerService>();
                 builder.Services.AddScoped<IMachineService, MachineService>();
                 builder.Services.AddScoped<IMaterialService, MaterialService>();
-                builder.Services.AddScoped<IServicessService, ServiceService>();
+                builder.Services.AddScoped<IServicessService, ServicesService>();
 
             }
             catch (Exception ex)
