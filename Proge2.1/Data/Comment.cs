@@ -13,6 +13,6 @@ namespace Proge2._1.Data
         public string Content { get; set; }
         [Required]
         [StringLength(512)]
-        public IdentityUser User { get; set; }
+        public string User { get; set; }
     }
 }
