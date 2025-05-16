@@ -1,11 +1,7 @@
 ﻿using Proge2._1.Data;
-using Proge2._1.Services;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Proge2._1.Controllers;
 using Proge2._1.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Services
 {
@@ -18,27 +14,35 @@ namespace Proge2._1.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<IServices>> GetPagedServices(int page, int pageSize)
+        public async Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize)
         {
-            return (IEnumerable<IServices>)await _context.Services
+            var items = await _context.Services
                 .OrderBy(s => s.ServiceId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
+
+            var totalCount = await _context.Services.CountAsync();
+
+            return new PagedResults<Servicess>
+            {
+                Items = items,
+                TotalCount = totalCount
+            };
         }
 
-        public async Task<Data.Servicess> GetServiceById(int id)
+        public async Task<Servicess> GetServiceById(int id)
         {
             return await _context.Services.FirstOrDefaultAsync(s => s.ServiceId == id);
         }
 
-        public async Task AddService(Data.Servicess service)
+        public async Task AddService(Servicess service)
         {
             _context.Services.Add(service);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateService(Data.Servicess service)
+        public async Task UpdateService(Servicess service)
         {
             _context.Entry(service).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -58,13 +62,5 @@ namespace Proge2._1.Services
         {
             return await _context.Services.AnyAsync(e => e.ServiceId == id);
         }
-    }
-
-    public interface IServices
-    {
-    }
-
-    public interface IServicessService
-    {
     }
 }

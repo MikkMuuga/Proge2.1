@@ -16,8 +16,10 @@ namespace Proge2._1.Controllers
 
         public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _materialService.GetPagedMaterials(page, pageSize));
+            var pagedMaterials = await _materialService.GetPagedMaterials(page, pageSize);
+            return View(pagedMaterials);
         }
+
 
         public async Task<IActionResult> Details(int? id)
         {
