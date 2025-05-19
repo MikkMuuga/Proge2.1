@@ -1,4 +1,5 @@
-﻿using Proge2._1.Data;
+﻿
+using Proge2._1.Data;
 using Proge2._1.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace Proge2._1.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<IServices>> GetPagedServices(int page, int pageSize)
+        public async Task<IEnumerable<Servicess>> GetPagedServices(int page, int pageSize)
         {
-            return (IEnumerable<IServices>)await _context.Services
+            return await _context.Services
                 .OrderBy(s => s.ServiceId)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -58,10 +59,6 @@ namespace Proge2._1.Services
         {
             return await _context.Services.AnyAsync(e => e.ServiceId == id);
         }
-    }
-
-    public interface IServices
-    {
     }
 
     public interface IServicessService
