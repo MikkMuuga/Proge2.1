@@ -114,5 +114,10 @@ namespace Proge2._1.Services
         {
             throw new NotImplementedException();
         }
+
+        Task<string?> ICustomerService.GetPagedCustomers(int page, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
