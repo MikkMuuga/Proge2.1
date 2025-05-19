@@ -16,14 +16,14 @@ namespace Proge2._1.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Materials>> GetPagedMaterials(int page, int pageSize)
+        public async Task<PagedResult<Materials>> GetPagedMaterials(int page, int pageSize)
         {
             return await _context.Materials
+                .AsNoTracking()
                 .OrderBy(m => m.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+                .GetPagedAsync(page, pageSize);
         }
+
 
         public async Task<Materials> GetMaterialById(int id)
         {

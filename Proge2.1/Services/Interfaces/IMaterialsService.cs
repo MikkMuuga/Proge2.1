@@ -6,7 +6,7 @@ namespace Proge2._1.Services.Interfaces
 {
     public interface IMaterialService
     {
-        Task<IEnumerable<Materials>> GetPagedMaterials(int page, int pageSize);
+        Task<PagedResult<Materials>> GetPagedMaterials(int page, int pageSize);
         Task<Materials> GetMaterialById(int id);
         Task AddMaterial(Materials material);
         Task UpdateMaterial(Materials material);

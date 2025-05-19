@@ -1,4 +1,4 @@
-﻿@model PagedResult<Proge2._1.Data.Servicess>
+﻿@model PagedResults<Proge2._1.Data.Servicess>
 
 @{
     ViewData["Title"] = "Index";
@@ -24,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Results) {
+@foreach (var item in Model.Items) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.transportation)

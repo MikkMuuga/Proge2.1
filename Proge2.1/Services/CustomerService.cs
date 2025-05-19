@@ -62,32 +62,55 @@ namespace Proge2._1.Services
             return await _context.Customers.AnyAsync(e => e.CustomerId == id);
         }
 
-        public Task<string?> GetPagedCustomers(int page, int pageSize)
+        public async Task<PagedResult<Customer>> GetPagedCustomers(int page, int pageSize)
         {
-            throw new NotImplementedException();
+            return await _context.Customers
+                .AsNoTracking()
+                .OrderBy(c => c.CustomerId)  // or any order you want
+                .GetPagedAsync(page, pageSize);
         }
 
-        public Task DeleteCustomer(int id)
+
+        public async Task AddCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+            if (customer == null)
+                throw new ArgumentNullException(nameof(customer));
+
+            customer.Date = DateTime.UtcNow;
+            _context.Customers.Add(customer);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<string?> GetCustomerById(int value)
+        public async Task UpdateCustomer(Customer customer)
         {
-            throw new NotImplementedException();
+            if (customer == null)
+                throw new ArgumentNullException(nameof(customer));
+
+            _context.Entry(customer).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
-        public Task<bool> CustomerExists(int customerId)
+        public async Task DeleteCustomer(int id)
         {
-            throw new NotImplementedException();
+            var customer = await _context.Customers.FindAsync(id);
+            if (customer != null)
+            {
+                _context.Customers.Remove(customer);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public Task UpdateCustomer(Customer customer)
+        public async Task<Customer> GetCustomerById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Customers.FindAsync(id);
         }
 
-        public Task AddCustomer(Customer customer)
+        public async Task<bool> CustomerExists(int customerId)
+        {
+            return await _context.Customers.AnyAsync(c => c.CustomerId == customerId);
+        }
+
+        Task<string?> ICustomerService.GetCustomerById(int value)
         {
             throw new NotImplementedException();
         }
