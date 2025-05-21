@@ -16,7 +16,8 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Comments
-        public async Task<IActionResult> Index(int page, int pageSize)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+
         {
             // 2. Replaced _context with service call
             return View(await _commentService.GetPagedComments(page, pageSize));

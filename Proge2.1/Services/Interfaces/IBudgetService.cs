@@ -1,4 +1,4 @@
-﻿// Kaust: Services/Interfaces/IBudgetService.cs
+﻿
 using Proge2._1.Data;
 using System.Collections.Generic;
 

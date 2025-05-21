@@ -1,9 +1,6 @@
-﻿using Proge2._1.Data;
+﻿
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Proge2._1.Data;
 
 namespace Proge2._1.Services
 {
@@ -31,7 +28,7 @@ namespace Proge2._1.Services
             if (customer == null)
                 throw new ArgumentNullException(nameof(customer));
 
-            customer.Date = DateTime.UtcNow; // Set current date if not provided
+            customer.Date = DateTime.UtcNow; // Set current date if not provided  
 
             _context.Customers.Add(customer);
             await _context.SaveChangesAsync();
@@ -66,10 +63,9 @@ namespace Proge2._1.Services
         {
             return await _context.Customers
                 .AsNoTracking()
-                .OrderBy(c => c.CustomerId)  // or any order you want
+                .OrderBy(c => c.CustomerId)  // or any order you want  
                 .GetPagedAsync(page, pageSize);
         }
-
 
         public async Task AddCustomer(Customer customer)
         {
@@ -110,12 +106,10 @@ namespace Proge2._1.Services
             return await _context.Customers.AnyAsync(c => c.CustomerId == customerId);
         }
 
-        Task<string?> ICustomerService.GetCustomerById(int value)
-        {
-            throw new NotImplementedException();
-        }
+        // Removed incorrect explicit interface implementation for GetPagedCustomers  
+        // Correct implementation is already provided above.  
 
-        Task<string?> ICustomerService.GetPagedCustomers(int page, int pageSize)
+        Task<string?> ICustomerService.GetCustomerById(int value)
         {
             throw new NotImplementedException();
         }

@@ -10,42 +10,46 @@ namespace Proge2._1.Services
         private readonly List<Budget> _budgets = new List<Budget>();
         private int _nextId = 1;
 
+        private readonly ApplicationDbContext _context;
+
+        public BudgetService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+
+        public void AddBudget(Budget budget)
+        {
+            _context.Budgets.Add(budget);
+            _context.SaveChanges(); // Persist to DB
+        }
+
         public IEnumerable<Budget> GetAllBudgets()
         {
-            return _budgets;
+            return _context.Budgets.ToList();
         }
 
         public Budget GetBudgetById(int id)
         {
-            return _budgets.FirstOrDefault(b => b.BudgetId == id);
-        }
-
-        public void AddBudget(Budget budget)
-        {
-            budget.BudgetId = _nextId++;
-            _budgets.Add(budget);
+            return _context.Budgets.Find(id);
         }
 
         public void UpdateBudget(Budget budget)
         {
-            var existing = GetBudgetById(budget.BudgetId);
-            if (existing != null)
-            {
-                existing.Client = budget.Client;
-                existing.Date = budget.Date;
-                existing.ServiceCost = budget.ServiceCost;
-                existing.TotalCost = CalculateTotalCost(budget.ServiceCost);
-            }
+            _context.Budgets.Update(budget);
+            _context.SaveChanges();
         }
 
         public void DeleteBudget(int id)
         {
-            var budget = GetBudgetById(id);
+            var budget = _context.Budgets.Find(id);
             if (budget != null)
             {
-                _budgets.Remove(budget);
+                _context.Budgets.Remove(budget);
+                _context.SaveChanges();
             }
         }
+
 
         public decimal CalculateTotalCost(decimal serviceCost)
         {
