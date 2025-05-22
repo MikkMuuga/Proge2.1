@@ -6,6 +6,8 @@ using Proge2._1.Services.Interfaces;
 using Proge2._1.Services;
 using Proge2_1.Data;
 using IServicessService = Proge2._1.Services.Interfaces.IServicessService;
+using Proge2._1.Data.Repositories;
+
 
 namespace Proge2._1
 {
@@ -39,6 +41,18 @@ namespace Proge2._1
                 builder.Services.AddScoped<IMachineService, MachineService>();
                 builder.Services.AddScoped<IMaterialService, MaterialService>();
                 builder.Services.AddScoped<IServicessService, ServicesService>();
+
+                // Repository registrations
+                builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+                builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
+                builder.Services.AddScoped<IMaterialsRepository, MaterialsRepository>();
+                builder.Services.AddScoped<IServicessRepository, ServicessRepository>();
+                builder.Services.AddScoped<IMachinesRepository, MachinesRepository>();
+                builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+
+                // Unit of Work registration
+                builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             }
             catch (Exception ex)

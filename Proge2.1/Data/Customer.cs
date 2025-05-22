@@ -2,7 +2,7 @@
 
 namespace Proge2._1.Data
 {
-    public class Customer
+    public class Customer: Entity
     {
         public int CustomerId { get; set; }
 

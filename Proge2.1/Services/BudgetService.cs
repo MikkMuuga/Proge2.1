@@ -7,8 +7,6 @@ namespace Proge2._1.Services
 {
     public class BudgetService : IBudgetService
     {
-        private readonly List<Budget> _budgets = new List<Budget>();
-        private int _nextId = 1;
 
         private readonly ApplicationDbContext _context;
 

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Proge2._1.Data
 {
-    public class Comment
+    public class Comment: Entity
     {
         [Required]
         public int CommentId { get; set; }

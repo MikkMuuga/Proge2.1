@@ -2,7 +2,7 @@
 
 namespace Proge2._1.Data
 {
-    public class Servicess
+    public class Servicess: Entity
     {
         [Key] 
         [Required]

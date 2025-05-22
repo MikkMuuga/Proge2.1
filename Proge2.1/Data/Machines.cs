@@ -2,7 +2,7 @@
 
 namespace Proge2._1.Data
 {
-    public class Machines
+    public class Machines: Entity
     {
         [Required]
         public int id { get; set; }

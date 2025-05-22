@@ -2,7 +2,8 @@
 
 namespace Proge2._1.Data
 {
-    public class Budget
+    public class Budget : Entity
+
     {
         [Required]
         public int BudgetId { get; set; }
