@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proge2._1.Data;
+using Proge2._1.Models;
 using Proge2._1.Services.Interfaces;
-using BudgetModel = Proge2._1.Data.Budget;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Proge2._1.Controllers
@@ -16,10 +18,12 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Budgets
-        public IActionResult Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            var budgets = _budgetService.GetAllBudgets();
+            // Await the async method to get the actual IEnumerable<Budget>
+            var budgets = await _budgetService.GetAllBudgetsAsync();
 
+            // Now you can use LINQ methods on the actual collection
             var pagedBudgets = budgets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             var pagedResult = new PagedResult<Budget>
@@ -30,7 +34,7 @@ namespace Proge2._1.Controllers
                 TotalItems = budgets.Count()
             };
 
-            return View(pagedResult); 
+            return View(pagedResult);
         }
 
         // GET: Budgets/Details/5
@@ -41,7 +45,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var budget = _budgetService.GetBudgetById(id.Value);
+            var budget = await _budgetService.GetBudgetByIdAsync(id.Value);
             if (budget == null)
             {
                 return NotFound();
@@ -64,7 +68,7 @@ namespace Proge2._1.Controllers
             {
                 try
                 {
-                    _budgetService.AddBudget(budget);
+                    await _budgetService.AddBudgetAsync(budget);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -84,7 +88,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var budget = _budgetService.GetBudgetById(id.Value);
+            var budget = await _budgetService.GetBudgetByIdAsync(id.Value);
             if (budget == null)
             {
                 return NotFound();
@@ -105,12 +109,12 @@ namespace Proge2._1.Controllers
             {
                 try
                 {
-                    _budgetService.UpdateBudget(budget);
+                    await _budgetService.UpdateBudgetAsync(budget);
                     return RedirectToAction(nameof(Index));
                 }
                 catch
                 {
-                    if (!BudgetExists(budget.BudgetId))
+                    if (!await BudgetExistsAsync(budget.BudgetId))
                     {
                         return NotFound();
                     }
@@ -131,7 +135,7 @@ namespace Proge2._1.Controllers
                 return NotFound();
             }
 
-            var budget = _budgetService.GetBudgetById(id.Value);
+            var budget = await _budgetService.GetBudgetByIdAsync(id.Value);
             if (budget == null)
             {
                 return NotFound();
@@ -145,13 +149,14 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            _budgetService.DeleteBudget(id);
+            await _budgetService.DeleteBudgetAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BudgetExists(int id)
+        private async Task<bool> BudgetExistsAsync(int id)
         {
-            return _budgetService.GetBudgetById(id) != null;
+            var budget = await _budgetService.GetBudgetByIdAsync(id);
+            return budget != null;
         }
     }
 }

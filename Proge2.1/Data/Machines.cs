@@ -5,6 +5,7 @@ namespace Proge2._1.Data
     public class Machines: Entity
     {
         [Required]
+        [Key]
         public int id { get; set; }
         [Required]
         [StringLength(25)]

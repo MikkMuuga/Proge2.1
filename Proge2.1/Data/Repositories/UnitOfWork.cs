@@ -15,8 +15,6 @@ namespace Proge2._1.Data.Repositories
         public IMachinesRepository MachinesRepository { get; }
         public ICommentRepository CommentRepository { get; }
 
-        public IBudgetRepository Budgets => throw new NotImplementedException();
-
         public UnitOfWork(ApplicationDbContext context,
             ICustomerRepository customerRepository,
             IBudgetRepository budgetRepository,
@@ -53,6 +51,26 @@ namespace Proge2._1.Data.Repositories
         public async Task Rollback()
         {
             await _context.Database.RollbackTransactionAsync();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public Task BeginTransactionAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RollbackAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CommitAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,62 +1,104 @@
 ﻿using Proge2._1.Data;
+using Proge2._1.Data.Repositories;
+using Proge2._1.Models;
 using Proge2._1.Services.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Services
 {
     public class BudgetService : IBudgetService
     {
+        private readonly IUnitOfWork _unitOfWork;
 
-        private readonly ApplicationDbContext _context;
-
-        public BudgetService(ApplicationDbContext context)
+        public BudgetService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-
-        public void AddBudget(Budget budget)
+        public async Task AddBudgetAsync(Budget budget)
         {
-            _context.Budgets.Add(budget);
-            _context.SaveChanges(); // Persist to DB
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.BudgetRepository.AddBudgetAsync(budget);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
-        public IEnumerable<Budget> GetAllBudgets()
+        public async Task<IEnumerable<Budget>> GetAllBudgetsAsync()
         {
-            return _context.Budgets.ToList();
+            return await _unitOfWork.BudgetRepository.GetBudgetsAsync();
         }
 
-        public Budget GetBudgetById(int id)
+        public async Task<Budget?> GetBudgetByIdAsync(int id)
         {
-            return _context.Budgets.Find(id);
+            return await _unitOfWork.BudgetRepository.GetBudgetByIdAsync(id);
         }
 
+        public async Task UpdateBudgetAsync(Budget budget)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.BudgetRepository.UpdateBudgetAsync(budget);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task DeleteBudgetAsync(int id)
+        {
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.BudgetRepository.DeleteBudgetAsync(id);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
+        }
+
+        public decimal CalculateTotalCost(Budget budget)
+        {
+            return budget.ServiceCost * 1.2m; // 20% VAT
+        }
         public void UpdateBudget(Budget budget)
         {
-            _context.Budgets.Update(budget);
-            _context.SaveChanges();
+            UpdateBudgetAsync(budget).GetAwaiter().GetResult();
+        }
+
+        public string? GetBudgetById(int id)
+        {
+
+            var budget = GetBudgetByIdAsync(id).GetAwaiter().GetResult();
+            return budget?.ToString();
         }
 
         public void DeleteBudget(int id)
         {
-            var budget = _context.Budgets.Find(id);
-            if (budget != null)
-            {
-                _context.Budgets.Remove(budget);
-                _context.SaveChanges();
-            }
+            DeleteBudgetAsync(id).GetAwaiter().GetResult();
         }
 
-
-        public decimal CalculateTotalCost(decimal serviceCost)
+        public void AddBudget(Budget budget)
         {
-            return serviceCost * 1.2m; // 20% käibemaks
+            AddBudgetAsync(budget).GetAwaiter().GetResult();
         }
-        public decimal CalculateTotalCost(Budget budget)
-        {
-            return CalculateTotalCost(budget.ServiceCost);
-        }
-
     }
 }
