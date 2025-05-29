@@ -3,6 +3,7 @@ using Proge2._1.Data;
 using Proge2._1.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Proge2._1.Data.Repositories;
 
 namespace Proge2._1.Services
 {

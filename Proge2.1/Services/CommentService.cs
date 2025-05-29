@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Proge2._1.Data.Repositories;
 
 namespace Proge2._1.Services
 {

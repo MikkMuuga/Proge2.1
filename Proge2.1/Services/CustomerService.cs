@@ -1,26 +1,30 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Proge2._1.Data;
+﻿using Proge2._1.Data;
+using Proge2._1.Data.Repositories;
+using Proge2._1.Models;
+using Proge2._1.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Services
 {
     public class CustomerService : ICustomerService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CustomerService(ApplicationDbContext context)
+        public CustomerService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<Customer> GetCustomerByIdAsync(int id)
+        public async Task<Customer?> GetCustomerByIdAsync(int id)
         {
-            return await _context.Customers.FindAsync(id);
+            return await _unitOfWork.CustomerRepository.GetByIdAsync(id);
         }
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            return await _context.Customers.ToListAsync();
+            return await _unitOfWork.CustomerRepository.GetAllAsync();
         }
 
         public async Task<Customer> CreateCustomerAsync(Customer customer)
@@ -28,11 +32,21 @@ namespace Proge2._1.Services
             if (customer == null)
                 throw new ArgumentNullException(nameof(customer));
 
-            customer.Date = DateTime.UtcNow; // Set current date if not provided  
+            customer.Date = DateTime.UtcNow;
 
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
-            return customer;
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.CustomerRepository.AddAsync(customer);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+                return customer;
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task UpdateCustomerAsync(Customer customer)
@@ -40,74 +54,72 @@ namespace Proge2._1.Services
             if (customer == null)
                 throw new ArgumentNullException(nameof(customer));
 
-            _context.Entry(customer).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.CustomerRepository.UpdateAsync(customer);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task DeleteCustomerAsync(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
+            await _unitOfWork.BeginTransactionAsync();
+            try
             {
-                _context.Customers.Remove(customer);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.CustomerRepository.DeleteAsync(id);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
             }
         }
 
         public async Task<bool> CustomerExistsAsync(int id)
         {
-            return await _context.Customers.AnyAsync(e => e.Id == id);
+            return await _unitOfWork.CustomerRepository.ExistsAsync(id);
         }
 
         public async Task<PagedResult<Customer>> GetPagedCustomers(int page, int pageSize)
         {
-            return await _context.Customers
-                .AsNoTracking()
-                .OrderBy(c => c.Id)  // or any order you want  
-                .GetPagedAsync(page, pageSize);
+            return await _unitOfWork.CustomerRepository.GetPagedAsync(page, pageSize);
         }
+
+        // Implementing leftover ICustomerService interface methods
 
         public async Task AddCustomer(Customer customer)
         {
-            if (customer == null)
-                throw new ArgumentNullException(nameof(customer));
-
-            customer.Date = DateTime.UtcNow;
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
+            await CreateCustomerAsync(customer);
         }
 
         public async Task UpdateCustomer(Customer customer)
         {
-            if (customer == null)
-                throw new ArgumentNullException(nameof(customer));
-
-            _context.Entry(customer).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await UpdateCustomerAsync(customer);
         }
 
         public async Task DeleteCustomer(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
-                await _context.SaveChangesAsync();
-            }
+            await DeleteCustomerAsync(id);
         }
 
-        public async Task<Customer> GetCustomerById(int id)
+        public async Task<Customer?> GetCustomerById(int value)
         {
-            return await _context.Customers.FindAsync(id);
+            return await GetCustomerByIdAsync(value);
         }
 
         public async Task<bool> CustomerExists(int customerId)
         {
-            return await _context.Customers.AnyAsync(c => c.Id == customerId);
+            return await CustomerExistsAsync(customerId);
         }
-
-        // Removed incorrect explicit interface implementation for GetPagedCustomers  
-        // Correct implementation is already provided above.  
 
         Task<string?> ICustomerService.GetCustomerById(int value)
         {
