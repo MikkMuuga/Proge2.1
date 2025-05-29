@@ -83,7 +83,7 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Comment comment)
         {
-            if (id != comment.CommentId)
+            if (id != comment.Id)
             {
                 return NotFound();
             }
@@ -97,7 +97,7 @@ namespace Proge2._1.Controllers
                 }
                 catch
                 {
-                    if (!await _commentService.CommentExists(comment.CommentId))
+                    if (!await _commentService.CommentExists(comment.Id))
                     {
                         return NotFound();
                     }

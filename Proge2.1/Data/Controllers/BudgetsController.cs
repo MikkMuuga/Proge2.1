@@ -100,7 +100,7 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Budget budget)
         {
-            if (id != budget.BudgetId)
+            if (id != budget.Id)
             {
                 return NotFound();
             }
@@ -114,7 +114,7 @@ namespace Proge2._1.Controllers
                 }
                 catch
                 {
-                    if (!await BudgetExistsAsync(budget.BudgetId))
+                    if (!await BudgetExistsAsync(budget.Id))
                     {
                         return NotFound();
                     }

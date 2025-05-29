@@ -2,10 +2,10 @@
 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Budget";
 }
 
-<h1>Index</h1>
+<h1>Budget</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -44,9 +44,9 @@
             </td>
 
             <td>
-                 <a asp-action="Edit" asp-route-id="@item.BudgetId">Edit</a> |
-                 <a asp-action="Details" asp-route-id="@item.BudgetId">Details</a> |
-                 <a asp-action="Delete" asp-route-id="@item.BudgetId">Delete</a>
+                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

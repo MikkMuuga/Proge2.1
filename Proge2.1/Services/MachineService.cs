@@ -21,7 +21,7 @@ namespace Proge2._1.Services
             var totalItems = await _context.Machines.CountAsync();
 
             var items = await _context.Machines
-                .OrderBy(m => m.id)
+                .OrderBy(m => m.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -64,7 +64,7 @@ namespace Proge2._1.Services
 
         public async Task<bool> MachineExists(int id)
         {
-            return await _context.Machines.AnyAsync(e => e.id == id);
+            return await _context.Machines.AnyAsync(e => e.Id == id);
         }
 
         public interface IMachineService
