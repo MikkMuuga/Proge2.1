@@ -226,14 +226,11 @@ namespace Proge2._1.Migrations
 
             modelBuilder.Entity("Proge2._1.Data.Budget", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BudgetId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BudgetId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BudgetId"));
 
                     b.Property<string>("Client")
                         .IsRequired()
@@ -249,21 +246,18 @@ namespace Proge2._1.Migrations
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("BudgetId");
 
-                    b.ToTable("Budgets");
+                    b.ToTable("Budgets", (string)null);
                 });
 
             modelBuilder.Entity("Proge2._1.Data.Comment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CommentId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -275,26 +269,23 @@ namespace Proge2._1.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("nvarchar(512)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CommentId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Proge2._1.Data.Customer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
                     b.Property<string>("Contact")
                         .IsRequired()
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -304,9 +295,9 @@ namespace Proge2._1.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CustomerId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("Proge2._1.Data.Machines", b =>
@@ -320,9 +311,6 @@ namespace Proge2._1.Migrations
                     b.Property<decimal>("CostOfMachines")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Supervision")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -334,7 +322,7 @@ namespace Proge2._1.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("Machines");
+                    b.ToTable("Machines", (string)null);
                 });
 
             modelBuilder.Entity("Proge2._1.Data.Materials", b =>
@@ -359,7 +347,7 @@ namespace Proge2._1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Materials");
+                    b.ToTable("Materials", (string)null);
                 });
 
             modelBuilder.Entity("Proge2._1.Data.Servicess", b =>
@@ -369,9 +357,6 @@ namespace Proge2._1.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceId"));
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("PanelProduction")
                         .HasColumnType("decimal(18,2)");
@@ -387,7 +372,7 @@ namespace Proge2._1.Migrations
 
                     b.HasKey("ServiceId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
