@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 namespace Proge2._1.Data.Repositories;
-    public abstract class BaseRepository<T> where T : Entity
+public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity
+
 {
     protected ApplicationDbContext DbContext { get; }
 

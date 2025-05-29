@@ -6,8 +6,6 @@ namespace Proge2._1.Data
 
     {
         [Required]
-        public int BudgetId { get; set; }
-        [Required]
         [StringLength(55)]
         public required string Client { get; set; }
         [Required]

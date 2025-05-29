@@ -81,7 +81,7 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,Workers,Supervision,CostOfMachines")] Machines machine)
         {
-            if (id != machine.id)
+            if (id != machine.Id)
             {
                 return NotFound();
             }
@@ -94,7 +94,7 @@ namespace Proge2._1.Controllers
                 }
                 catch
                 {
-                    if (!await _machineService.MachineExists(machine.id))
+                    if (!await _machineService.MachineExists(machine.Id))
                     {
                         return NotFound();
                     }

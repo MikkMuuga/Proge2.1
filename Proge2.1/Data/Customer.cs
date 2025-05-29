@@ -4,8 +4,6 @@ namespace Proge2._1.Data
 {
     public class Customer: Entity
     {
-        public int CustomerId { get; set; }
-
         
         [Required]
         [StringLength(55)]

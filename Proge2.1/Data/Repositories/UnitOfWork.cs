@@ -1,6 +1,7 @@
 ﻿using Proge2._1.Models;
 using Proge2._1.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Proge2._1.Data.Repositories
 {
@@ -58,19 +59,33 @@ namespace Proge2._1.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task BeginTransactionAsync()
+        private IDbContextTransaction? _transaction;
+
+        public async Task BeginTransactionAsync()
         {
-            throw new NotImplementedException();
+            _transaction = await _context.Database.BeginTransactionAsync();
         }
 
-        public Task RollbackAsync()
+
+        public async Task CommitAsync()
         {
-            throw new NotImplementedException();
+            if (_transaction != null)
+            {
+                await _transaction.CommitAsync();
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
         }
 
-        public Task CommitAsync()
+        public async Task RollbackAsync()
         {
-            throw new NotImplementedException();
+            if (_transaction != null)
+            {
+                await _transaction.RollbackAsync();
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
         }
+
     }
 }

@@ -78,7 +78,7 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Name,Date,Contact")] Customer customer)
         {
-            if (id != customer.CustomerId)
+            if (id != customer.Id)
             {
                 return NotFound();
             }
@@ -91,7 +91,7 @@ namespace Proge2._1.Controllers
                 }
                 catch
                 {
-                    if (!await _customerService.CustomerExists(customer.CustomerId))
+                    if (!await _customerService.CustomerExists(customer.Id))
                     {
                         return NotFound();
                     }

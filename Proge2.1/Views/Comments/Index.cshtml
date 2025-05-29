@@ -1,10 +1,10 @@
 ﻿@model PagedResult<Proge2._1.Data.Comment>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Comment";
 }
 
-<h1>Index</h1>
+<h1>Comment</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -28,7 +28,7 @@
 @foreach (var item in Model.Results) {
         <tr>
                 <td>
-                        @Html.DisplayFor(modelItem => item.CommentId)
+                        @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
                         @Html.DisplayFor(modelItem => item.Content)
@@ -38,9 +38,9 @@
                 </td>
 
             <td>
-                    <a asp-action="Edit" asp-route-id="@item.CommentId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CommentId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CommentId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

@@ -232,9 +232,6 @@ namespace Proge2._1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BudgetId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Client")
                         .IsRequired()
                         .HasMaxLength(55)
@@ -261,9 +258,6 @@ namespace Proge2._1.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -293,9 +287,6 @@ namespace Proge2._1.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -311,17 +302,14 @@ namespace Proge2._1.Migrations
 
             modelBuilder.Entity("Proge2._1.Data.Machines", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("CostOfMachines")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
 
                     b.Property<string>("Supervision")
                         .IsRequired()
@@ -332,7 +320,7 @@ namespace Proge2._1.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Machines");
                 });

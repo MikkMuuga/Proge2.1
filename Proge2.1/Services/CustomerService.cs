@@ -56,14 +56,14 @@ namespace Proge2._1.Services
 
         public async Task<bool> CustomerExistsAsync(int id)
         {
-            return await _context.Customers.AnyAsync(e => e.CustomerId == id);
+            return await _context.Customers.AnyAsync(e => e.Id == id);
         }
 
         public async Task<PagedResult<Customer>> GetPagedCustomers(int page, int pageSize)
         {
             return await _context.Customers
                 .AsNoTracking()
-                .OrderBy(c => c.CustomerId)  // or any order you want  
+                .OrderBy(c => c.Id)  // or any order you want  
                 .GetPagedAsync(page, pageSize);
         }
 
@@ -103,7 +103,7 @@ namespace Proge2._1.Services
 
         public async Task<bool> CustomerExists(int customerId)
         {
-            return await _context.Customers.AnyAsync(c => c.CustomerId == customerId);
+            return await _context.Customers.AnyAsync(c => c.Id == customerId);
         }
 
         // Removed incorrect explicit interface implementation for GetPagedCustomers  

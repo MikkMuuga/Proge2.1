@@ -41,10 +41,10 @@ namespace Proge2._1.Data.Repositories
                 _context.Budgets.Remove(budget);
             }
         }
-
-        public Task<IEnumerable<Budget>> GetAllBudgetsAsync()
+        public async Task<IEnumerable<Budget>> GetAllBudgetsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Budgets.ToListAsync();
         }
+
     }
 }
