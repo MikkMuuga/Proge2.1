@@ -1,76 +1,84 @@
 ﻿using Proge2._1.Data;
+using Proge2._1.Data.Repositories;
+using Proge2._1.Models;
 using Proge2._1.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Proge2._1.Data.Repositories;
+using System;
 
 namespace Proge2._1.Services
 {
     public class MachineService : IMachineService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MachineService(ApplicationDbContext context)
+        public MachineService(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize)
         {
-            var totalItems = await _context.Machines.CountAsync();
-
-            var items = await _context.Machines
-                .OrderBy(m => m.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return new PagedResult<Machines>
-            {
-                Results = items,          // Items → Results
-                CurrentPage = page,       // PageNumber → CurrentPage
-                PageSize = pageSize,      // (unchanged)
-                TotalCount = totalItems   // TotalItems → TotalCount (or RowCount)
-            };
+            return await _unitOfWork.MachinesRepository.GetPagedAsync(page, pageSize);
         }
 
-        public async Task<Machines> GetMachineById(int id)
+        public async Task<Machines?> GetMachineById(int id)
         {
-            return await _context.Machines.FindAsync(id);
+            return await _unitOfWork.MachinesRepository.GetByIdAsync(id);
         }
 
         public async Task AddMachine(Machines machine)
         {
-            _context.Machines.Add(machine);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.MachinesRepository.AddAsync(machine);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task UpdateMachine(Machines machine)
         {
-            _context.Entry(machine).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _unitOfWork.BeginTransactionAsync();
+            try
+            {
+                await _unitOfWork.MachinesRepository.UpdateAsync(machine);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
+            }
         }
 
         public async Task DeleteMachine(int id)
         {
-            var machine = await _context.Machines.FindAsync(id);
-            if (machine != null)
+            await _unitOfWork.BeginTransactionAsync();
+            try
             {
-                _context.Machines.Remove(machine);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.MachinesRepository.DeleteAsync(id);
+                await _unitOfWork.SaveAsync();
+                await _unitOfWork.CommitAsync();
+            }
+            catch
+            {
+                await _unitOfWork.RollbackAsync();
+                throw;
             }
         }
 
         public async Task<bool> MachineExists(int id)
         {
-            return await _context.Machines.AnyAsync(e => e.Id == id);
-        }
-
-        public interface IMachineService
-        {
-            Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize);
+            return await _unitOfWork.MachinesRepository.ExistsAsync(id);
         }
     }
 }

@@ -1,61 +1,76 @@
-﻿using Proge2._1.Data;
+﻿using Proge2._1.Data.Repositories;
+using Proge2._1.Data;
 using Proge2._1.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Proge2._1.Data.Repositories;
 
-namespace Proge2._1.Services
+public class MaterialService : IMaterialService
 {
-    public class MaterialService : IMaterialService
+    private readonly IUnitOfWork _unitOfWork;
+
+    public MaterialService(IUnitOfWork unitOfWork)
     {
-        private readonly ApplicationDbContext _context;
+        _unitOfWork = unitOfWork;
+    }
 
-        public MaterialService(ApplicationDbContext context)
+    public async Task<PagedResult<Materials>> GetPagedMaterials(int page, int pageSize)
+    {
+        return await _unitOfWork.MaterialsRepository.GetPagedAsync(page, pageSize);
+    }
+
+    public async Task<Materials> GetMaterialById(int id)
+    {
+        return await _unitOfWork.MaterialsRepository.GetByIdAsync(id);
+    }
+
+    public async Task AddMaterial(Materials material)
+    {
+        await _unitOfWork.BeginTransactionAsync();
+        try
         {
-            _context = context;
+            await _unitOfWork.MaterialsRepository.AddAsync(material);
+            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CommitAsync();
         }
-
-        public async Task<PagedResult<Materials>> GetPagedMaterials(int page, int pageSize)
+        catch
         {
-            return await _context.Materials
-                .AsNoTracking()
-                .OrderBy(m => m.Id)
-                .GetPagedAsync(page, pageSize);
+            await _unitOfWork.RollbackAsync();
+            throw;
         }
+    }
 
-
-        public async Task<Materials> GetMaterialById(int id)
+    public async Task UpdateMaterial(Materials material)
+    {
+        await _unitOfWork.BeginTransactionAsync();
+        try
         {
-            return await _context.Materials.FindAsync(id);
+            await _unitOfWork.MaterialsRepository.UpdateAsync(material);
+            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CommitAsync();
         }
-
-        public async Task AddMaterial(Materials material)
+        catch
         {
-            _context.Materials.Add(material);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.RollbackAsync();
+            throw;
         }
+    }
 
-        public async Task UpdateMaterial(Materials material)
+    public async Task DeleteMaterial(int id)
+    {
+        await _unitOfWork.BeginTransactionAsync();
+        try
         {
-            _context.Entry(material).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            await _unitOfWork.MaterialsRepository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
+            await _unitOfWork.CommitAsync();
         }
+        catch
+        {
+            await _unitOfWork.RollbackAsync();
+            throw;
+        }
+    }
 
-        public async Task DeleteMaterial(int id)
-        {
-            var material = await _context.Materials.FindAsync(id);
-            if (material != null)
-            {
-                _context.Materials.Remove(material);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<bool> MaterialExists(int id)
-        {
-            return await _context.Materials.AnyAsync(e => e.Id == id);
-        }
+    public async Task<bool> MaterialExists(int id)
+    {
+        return await _unitOfWork.MaterialsRepository.ExistsAsync(id);
     }
 }

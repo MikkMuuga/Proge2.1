@@ -50,7 +50,7 @@ namespace Proge2._1.Controllers
         // POST: Machines/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,Workers,Supervision,CostOfMachines")] Machines machine)
+        public async Task<IActionResult> Create([Bind("Id,Workers,Supervision,CostOfMachines")] Machines machine)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace Proge2._1.Controllers
         // POST: Machines/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,Workers,Supervision,CostOfMachines")] Machines machine)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Workers,Supervision,CostOfMachines")] Machines machine)
         {
             if (id != machine.Id)
             {

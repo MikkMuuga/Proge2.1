@@ -14,9 +14,10 @@ namespace Proge2._1.Services
         Task<bool> CustomerExistsAsync(int id);
         Task<PagedResult<Customer>> GetPagedCustomers(int page, int pageSize);
         Task DeleteCustomer(int id);
-        Task<string?> GetCustomerById(int value);
+        Task<Customer?> GetCustomerById(int value);
         Task<bool> CustomerExists(int customerId);
         Task UpdateCustomer(Customer customer);
         Task AddCustomer(Customer customer);
+
     }
 }

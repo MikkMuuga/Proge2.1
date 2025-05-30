@@ -120,10 +120,5 @@ namespace Proge2._1.Services
         {
             return await CustomerExistsAsync(customerId);
         }
-
-        Task<string?> ICustomerService.GetCustomerById(int value)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
