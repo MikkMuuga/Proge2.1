@@ -5,6 +5,8 @@ using Proge2._1.Services.Interfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Proge2._1.Search; 
+using Proge2._1.Services;
 
 namespace Proge2._1.Controllers
 {
@@ -18,23 +20,12 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Budgets
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, BudgetIndexModel model = null)
         {
-            // Await the async method to get the actual IEnumerable<Budget>
-            var budgets = await _budgetService.GetAllBudgetsAsync();
+            model = model ?? new BudgetIndexModel();
+            model.Data = await _budgetService.List(page, 5, model.Search);
 
-            // Now you can use LINQ methods on the actual collection
-            var pagedBudgets = budgets.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-            var pagedResult = new PagedResult<Budget>
-            {
-                Items = pagedBudgets,
-                CurrentPage = page,
-                PageSize = pageSize,
-                TotalItems = budgets.Count()
-            };
-
-            return View(pagedResult);
+            return View(model);
         }
 
         // GET: Budgets/Details/5

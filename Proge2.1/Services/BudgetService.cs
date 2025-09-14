@@ -1,6 +1,8 @@
-﻿using Proge2._1.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Proge2._1.Data;
 using Proge2._1.Data.Repositories;
 using Proge2._1.Models;
+using Proge2._1.Search;
 using Proge2._1.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -100,5 +102,39 @@ namespace Proge2._1.Services
         {
             AddBudgetAsync(budget).GetAwaiter().GetResult();
         }
+
+        public async Task<PagedResult<Budget>> List(int page, int size, BudgetSearch search)
+        {
+            var budgets = await _unitOfWork.BudgetRepository.GetBudgetsAsync();
+
+            // Apply search filters
+            if (search != null)
+            {
+                if (!string.IsNullOrEmpty(search.Keyword))
+                {
+                    budgets = budgets.Where(b => b.Client.Contains(search.Keyword, StringComparison.OrdinalIgnoreCase));
+                }
+
+                if (search.Done.HasValue)
+                {
+                    budgets = budgets.Where(b => b.TotalCost > 0 == search.Done.Value);
+                }
+            }
+
+            // Pagination logic
+            var totalItems = budgets.Count();
+            var pagedBudgets = budgets
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToList();
+
+            return new PagedResult<Budget>
+            {
+                Results = pagedBudgets,
+                TotalItems = totalItems
+            };
+        }
+
+
     }
 }

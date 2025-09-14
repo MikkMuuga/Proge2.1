@@ -1,4 +1,5 @@
 ﻿using Proge2._1.Data;
+using Proge2._1.Search;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,5 +17,7 @@ namespace Proge2._1.Services.Interfaces
         string? GetBudgetById(int value);
         void DeleteBudget(int id);
         void AddBudget(Budget budget);
+        Task<PagedResult<Budget>> List(int page, int v, BudgetSearch search);
+
     }
 }
