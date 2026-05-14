@@ -1,5 +1,6 @@
 ﻿using Proge2._1.Controllers;
 using Proge2._1.Data;
+using Proge2._1.Search;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace Proge2._1.Services.Interfaces
     public interface IServicessService
     {
         Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize);
+        Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize, ServiceSearch search);
         Task<Servicess> GetServiceById(int id);
         Task AddService(Servicess service);
         Task UpdateService(Servicess service);

@@ -15,7 +15,7 @@ namespace Proge2._1.Data.Repositories
             _context = context;
         }
 
-        public async Task<PagedResult<Machines>> GetPagedAsync(int page, int pageSize)
+        public async Task<PagedResult<Machines>> GetPagedAsync(int page, int pageSize, Search.MachineSearch search)
         {
             var result = new PagedResult<Machines>
             {
@@ -31,6 +31,13 @@ namespace Proge2._1.Data.Repositories
             result.Results = await _context.Machines.Skip(skip).Take(pageSize).ToListAsync();
 
             return result;
+        }
+
+        // Implemented to satisfy IMachinesRepository.GetPagedAsync(int, int)
+        public async Task<PagedResult<Machines>> GetPagedAsync(int page, int pageSize)
+        {
+            // Delegate to the search overload with a default search
+            return await GetPagedAsync(page, pageSize, new Search.MachineSearch());
         }
 
         public async Task<Machines?> GetByIdAsync(int id)
@@ -61,6 +68,17 @@ namespace Proge2._1.Data.Repositories
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Machines.AnyAsync(e => e.Id == id);
+        }
+
+        // Implemented to satisfy IMachinesRepository.GetAllAsync()
+        public async Task GetAllAsync()
+        {
+            // Materialize all machines (result intentionally not returned to match interface signature)
+            await _context.Machines.ToListAsync();
+        }
+        public IQueryable<Machines> GetQueryable()
+        {
+            return _context.Machines.AsQueryable();
         }
     }
 }

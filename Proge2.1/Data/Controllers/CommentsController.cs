@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proge2._1.Data;
+using Proge2._1.Models;
+using Proge2._1.Search;
 using Proge2._1.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Controllers
 {
@@ -9,34 +11,29 @@ namespace Proge2._1.Controllers
     {
         private readonly ICommentService _commentService;
 
-        // 1. Changed constructor to inject ICommentService
         public CommentsController(ICommentService commentService)
         {
             _commentService = commentService;
         }
 
-        // GET: Comments
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
-
+        // ✅ GET: Comments (with search + paging)
+        public async Task<IActionResult> Index(int page = 1, CommentIndexModel model = null)
         {
-            // 2. Replaced _context with service call
-            return View(await _commentService.GetPagedComments(page, pageSize));
+            model ??= new CommentIndexModel();
+            model.Data = await _commentService.GetPagedComments(page, 10, model.Search);
+            return View(model);
         }
+
 
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            // 3. Replaced _context with service call
             var comment = await _commentService.GetCommentById(id.Value);
             if (comment == null)
-            {
                 return NotFound();
-            }
 
             return View(comment);
         }
@@ -50,31 +47,25 @@ namespace Proge2._1.Controllers
         // POST: Comments/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Comment comment)
+        public async Task<IActionResult> Create([Bind("Content,User")] Comment comment)
         {
-            if (ModelState.IsValid)
-            {
-                // 4. Replaced _context with service call
-                await _commentService.AddComment(comment);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(comment);
+            if (!ModelState.IsValid)
+                return View(comment);
+
+            await _commentService.AddComment(comment);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            // 5. Replaced _context with service call
             var comment = await _commentService.GetCommentById(id.Value);
             if (comment == null)
-            {
                 return NotFound();
-            }
+
             return View(comment);
         }
 
@@ -84,44 +75,34 @@ namespace Proge2._1.Controllers
         public async Task<IActionResult> Edit(int id, Comment comment)
         {
             if (id != comment.Id)
-            {
                 return NotFound();
+
+            if (!ModelState.IsValid)
+                return View(comment);
+
+            try
+            {
+                await _commentService.UpdateComment(comment);
+            }
+            catch
+            {
+                if (!await _commentService.CommentExists(comment.Id))
+                    return NotFound();
+                throw;
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // 6. Replaced _context with service call
-                    await _commentService.UpdateComment(comment);
-                }
-                catch
-                {
-                    if (!await _commentService.CommentExists(comment.Id))
-                    {
-                        return NotFound();
-                    }
-                    throw;
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(comment);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            // 7. Replaced _context with service call
             var comment = await _commentService.GetCommentById(id.Value);
             if (comment == null)
-            {
                 return NotFound();
-            }
 
             return View(comment);
         }
@@ -131,7 +112,6 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // 8. Replaced _context with service call
             await _commentService.DeleteComment(id);
             return RedirectToAction(nameof(Index));
         }

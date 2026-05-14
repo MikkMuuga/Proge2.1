@@ -1,9 +1,10 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
-using Proge2._1.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using Proge2._1.Data.Repositories;
+using Proge2._1.Extensions;
+using Proge2._1.Search;
+using Proge2._1.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Services
 {
@@ -16,9 +17,46 @@ namespace Proge2._1.Services
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<PagedResults<Servicess>> List(int page, int pageSize, ServiceSearch search = null)
+        {
+            search ??= new ServiceSearch();
+
+            var query = _unitOfWork.ServicesRepository.GetQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search.Transportation))
+                query = query.Where(s => s.transportation.Contains(search.Transportation));
+
+            if (search.PanelProduction.HasValue)
+                query = query.Where(s => s.PanelProduction == search.PanelProduction.Value);
+
+            if (!string.IsNullOrWhiteSpace(search.Montage))
+                query = query.Where(s => s.montage.Contains(search.Montage));
+
+            query = query.OrderBy(s => s.ServiceId);
+
+            var total = await query.CountAsync();
+            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return new PagedResults<Servicess>
+            {
+                Items = items,
+                TotalCount = total,
+                TotalItems = total,
+                CurrentPage = page,
+                PageNumber = page,
+                PageSize = pageSize,
+                PageCount = pageSize == 0 ? 0 : (int)Math.Ceiling((double)total / pageSize)
+            };
+        }
+
         public async Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize)
         {
-            return await _unitOfWork.ServicesRepository.GetPagedAsync(page, pageSize);
+            return await List(page, pageSize);
+        }
+
+        public async Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize, ServiceSearch search)
+        {
+            return await List(page, pageSize, search);
         }
 
         public async Task<Servicess> GetServiceById(int id)

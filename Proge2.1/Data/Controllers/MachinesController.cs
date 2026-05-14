@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proge2._1.Data;
+using Proge2._1.Models;
+using Proge2._1.Search;
 using Proge2._1.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Controllers
 {
@@ -15,13 +17,11 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Machines
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, MachineIndexModel model = null)
         {
-            if (page < 1) page = 1;
-            if (pageSize < 1) pageSize = 10;
-
-            var result = await _machineService.GetPagedMachines(page, pageSize);
-            return View(result);
+            model ??= new MachineIndexModel();
+            model.Data = await _machineService.GetPagedMachines(page, 10, model.Search);
+            return View(model);
         }
 
         // GET: Machines/Details/5
@@ -120,6 +120,8 @@ namespace Proge2._1.Controllers
             }
 
             return View(machine);
+
+
         }
 
         // POST: Machines/Delete/5

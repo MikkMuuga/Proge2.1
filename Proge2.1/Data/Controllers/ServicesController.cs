@@ -1,8 +1,9 @@
 ﻿ 
-using System.Threading.Tasks;  
 using Microsoft.AspNetCore.Mvc;  
-using Proge2._1.Data;  
+using Proge2._1.Data;
+using Proge2._1.Models;
 using Proge2._1.Services.Interfaces;  
+using System.Threading.Tasks;  
 
 namespace Proge2._1.Controllers  
 {  
@@ -13,13 +14,14 @@ namespace Proge2._1.Controllers
         public ServicesController(IServicessService servicesService)  
         {  
             _servicesService = servicesService;  
-        }  
+        }
 
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)  
-        {  
-            var pagedServices = await _servicesService.GetPagedServices(page, pageSize);  
-            return View(pagedServices);  
-        }  
+        public async Task<IActionResult> Index(int page = 1, ServiceIndexModel model = null)
+        {
+            model ??= new ServiceIndexModel();
+            model.Data = await _servicesService.GetPagedServices(page, 10, model.Search);
+            return View(model);
+        }
 
         public async Task<IActionResult> Details(int? id)  
         {  

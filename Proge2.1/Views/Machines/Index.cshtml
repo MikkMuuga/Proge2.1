@@ -1,4 +1,4 @@
-﻿@model PagedResult<Proge2._1.Data.Machines>
+﻿@model Proge2._1.Models.MachineIndexModel
 
 @{
     ViewData["Title"] = "Machines";
@@ -7,8 +7,33 @@
 <h1>Machines</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
+
+<form method="get" class="mb-3">
+    <div class="form-group mb-2">
+        <label>Workers</label>
+        <input asp-for="Search.Workers" class="form-control" />
+    </div>
+    <div class="form-group mb-2">
+        <label>Supervision</label>
+        <input asp-for="Search.Supervision" class="form-control" />
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <label>Min cost</label>
+            <input asp-for="Search.MinCost" class="form-control" />
+        </div>
+        <div class="col">
+            <label>Max cost</label>
+            <input asp-for="Search.MaxCost" class="form-control" />
+        </div>
+    </div>
+    <div class="mt-2">
+        <button class="btn btn-primary">Search</button>
+        <a asp-action="Index" class="btn btn-secondary">Reset</a>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -25,7 +50,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Results) {
+        @foreach (var item in Model.Data.Results) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Workers)

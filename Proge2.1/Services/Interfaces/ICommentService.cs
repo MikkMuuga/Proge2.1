@@ -1,5 +1,6 @@
 ﻿
 using Proge2._1.Data;
+using Proge2._1.Search;
 using Proge2._1.Services;
 using System.Threading.Tasks;
 
@@ -13,5 +14,8 @@ namespace Proge2._1.Services.Interfaces
         Task UpdateComment(Comment comment);
         Task DeleteComment(int id);
         Task<bool> CommentExists(int id);
+        Task<PagedResult<Comment>> GetPagedComments(int page, int pageSize, CommentSearch search);
+
+
     }
 }

@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proge2._1.Data;
+using Proge2._1.Models;
 using Proge2._1.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace Proge2._1.Controllers
 {
@@ -14,10 +15,11 @@ namespace Proge2._1.Controllers
             _materialService = materialService;
         }
 
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, MaterialIndexModel model = null)
         {
-            var pagedMaterials = await _materialService.GetPagedMaterials(page, pageSize);
-            return View(pagedMaterials);
+            model ??= new MaterialIndexModel();
+            model.Data = await _materialService.GetPagedMaterials(page, 10, model.Search);
+            return View(model);
         }
 
 

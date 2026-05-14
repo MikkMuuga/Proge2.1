@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Proge2._1.Models;
+using Proge2._1.Search;
 
 namespace Proge2._1.Data.Repositories
 {
@@ -47,9 +48,24 @@ namespace Proge2._1.Data.Repositories
             return await _context.Customers.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<PagedResult<Customer>> GetPagedAsync(int page, int pageSize)
+        public async Task<PagedResult<Customer>> GetPagedAsync(int page, int pageSize, CustomerSearch search)
         {
-            var query = _context.Customers.AsNoTracking().OrderBy(c => c.Id);
+            IQueryable<Customer> query = _context.Customers.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(search?.Name))
+                query = query.Where(c => c.Name.Contains(search.Name));
+
+            if (search?.DateFrom.HasValue == true)
+                query = query.Where(c => c.Date >= search.DateFrom.Value);
+
+            if (search?.DateTo.HasValue == true)
+                query = query.Where(c => c.Date <= search.DateTo.Value);
+
+            if (!string.IsNullOrEmpty(search?.Contact))
+                query = query.Where(c => c.Contact.Contains(search.Contact));
+
+            query = query.OrderBy(c => c.Id);
+
             var total = await query.CountAsync();
             var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
@@ -61,6 +77,14 @@ namespace Proge2._1.Data.Repositories
                 PageSize = pageSize,
                 PageCount = (int)Math.Ceiling((double)total / pageSize)
             };
+        }
+        public async Task<PagedResult<Customer>> GetPagedAsync(int page, int pageSize)
+        {
+            return await GetPagedAsync(page, pageSize, new CustomerSearch());
+        }
+        public IQueryable<Customer> GetQueryable()
+        {
+            return _context.Customers.AsQueryable();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Proge2._1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace Proge2._1.Data
         public IList<T> Results { get; set; } = new List<T>();
         public IEnumerable<Budget> Items { get; internal set; }
         public int TotalItems { get; internal set; }
+        public CustomerIndexModel Search { get; internal set; }
+        public object Data { get; internal set; }
     }
 
 

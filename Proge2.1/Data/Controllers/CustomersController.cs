@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Proge2._1.Data;
+using Proge2._1.Models;
 using Proge2._1.Services;
 using Proge2._1.Services.Interfaces;
 
@@ -16,9 +17,11 @@ namespace Proge2._1.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, CustomerIndexModel model = null)
         {
-            return View(await _customerService.GetPagedCustomers(page, pageSize));
+            model ??= new CustomerIndexModel();
+            model.Data = await _customerService.GetPagedCustomers(page, 10, model.Search);
+            return View(model);
         }
 
         // GET: Customers/Details/5

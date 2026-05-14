@@ -1,6 +1,8 @@
 ﻿using Proge2._1.Data;
 using Proge2._1.Data.Repositories;
 using Proge2._1.Models;
+using Proge2._1.Search;
+using Proge2._1.Extensions;
 using Proge2._1.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,27 @@ namespace Proge2._1.Services
         public CustomerService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public async Task<PagedResult<Customer>> List(int page, int pageSize, CustomerSearch search = null)
+        {
+            search ??= new CustomerSearch();
+
+            var query = _unitOfWork.CustomerRepository.GetQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search.Name))
+                query = query.Where(c => c.Name.Contains(search.Name));
+
+            if (search.DateFrom.HasValue)
+                query = query.Where(c => c.Date >= search.DateFrom.Value);
+
+            if (search.DateTo.HasValue)
+                query = query.Where(c => c.Date <= search.DateTo.Value);
+
+            if (!string.IsNullOrWhiteSpace(search.Contact))
+                query = query.Where(c => c.Contact.Contains(search.Contact));
+
+            return await query.OrderBy(c => c.Id).GetPagedAsync(page, pageSize);
         }
 
         public async Task<Customer?> GetCustomerByIdAsync(int id)
@@ -94,8 +117,6 @@ namespace Proge2._1.Services
             return await _unitOfWork.CustomerRepository.GetPagedAsync(page, pageSize);
         }
 
-        // Implementing leftover ICustomerService interface methods
-
         public async Task AddCustomer(Customer customer)
         {
             await CreateCustomerAsync(customer);
@@ -119,6 +140,11 @@ namespace Proge2._1.Services
         public async Task<bool> CustomerExists(int customerId)
         {
             return await CustomerExistsAsync(customerId);
+        }
+
+        public async Task<PagedResult<Customer>> GetPagedCustomers(int page, int pageSize, CustomerSearch search)
+        {
+            return await _unitOfWork.CustomerRepository.GetPagedAsync(page, pageSize, search);
         }
     }
 }

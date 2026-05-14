@@ -1,54 +1,90 @@
-﻿@model Proge2._1.Data.PagedResult<Proge2._1.Data.Budget>
-
+﻿@model Proge2._1.Models.BudgetIndexModel
 
 @{
-    ViewData["Title"] = "Budget";
+    ViewData["Title"] = "Budgets";
 }
 
-<h1>Budget</h1>
+<h1>Budgets</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
-<table class="table">
+
+<form method="get" class="mb-3">
+    <div class="form-group">
+        <label class="control-label">Client</label>
+        <input asp-for="Search.Client" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Date</label>
+        <input asp-for="Search.Date" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Service Cost</label>
+        <input asp-for="Search.ServiceCost" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">Total Cost</label>
+        <input asp-for="Search.TotalCost" class="form-control" />
+    </div>
+    <div class="form-group mt-2">
+        <button class="btn btn-primary">Search</button>
+        <a asp-controller="Budgets" asp-action="Index" class="btn btn-secondary">Reset</a>
+    </div>
+</form>
+
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>
-               Client
-            </th>
-            <th>
-                Date
-            </th>
-            <th>
-                ServiceCost
-            </th>
-            <th>
-                TotalCost
-            </th>
+            <th>Client</th>
+            <th>Date</th>
+            <th>Service Cost</th>
+            <th>Total Cost</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Items) {
-        <tr>
-            <td>
-                 @Html.DisplayFor(modelItem => item.Client)
-            </td>
-            <td>
-                 @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                 @Html.DisplayFor(modelItem => item.ServiceCost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalCost)
-            </td>
-
-            <td>
-                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Budgets)
+        {
+            <tr>
+                <td>@item.Client</td>
+                <td>@item.Date.ToShortDateString()</td>
+                <td>@item.ServiceCost</td>
+                <td>@item.TotalCost</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div>
+    Page @Model.Page of @(Math.Ceiling((double)Model.TotalItems / Model.Size))
+</div>
+
+@if (Model.Page > 1)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.Page - 1)"
+       asp-route-size="@Model.Size"
+       asp-route-Search.Client="@Model.Search.Client"
+       asp-route-Search.Date="@Model.Search.Date"
+       asp-route-Search.ServiceCost="@Model.Search.ServiceCost"
+       asp-route-Search.TotalCost="@Model.Search.TotalCost"
+       class="btn btn-outline-primary">Previous</a>
+}
+
+@if (Model.Page * Model.Size < Model.TotalItems)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.Page + 1)"
+       asp-route-size="@Model.Size"
+       asp-route-Search.Client="@Model.Search.Client"
+       asp-route-Search.Date="@Model.Search.Date"
+       asp-route-Search.ServiceCost="@Model.Search.ServiceCost"
+       asp-route-Search.TotalCost="@Model.Search.TotalCost"
+       class="btn btn-outline-primary">Next</a>
+}

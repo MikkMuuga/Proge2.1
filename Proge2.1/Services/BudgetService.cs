@@ -105,19 +105,29 @@ namespace Proge2._1.Services
 
         public async Task<PagedResult<Budget>> List(int page, int size, BudgetSearch search)
         {
-            var budgets = await _unitOfWork.BudgetRepository.GetBudgetsAsync();
+            var budgets = (await _unitOfWork.BudgetRepository.GetBudgetsAsync()).AsQueryable();
 
             // Apply search filters
             if (search != null)
             {
-                if (!string.IsNullOrEmpty(search.Keyword))
+                if (!string.IsNullOrWhiteSpace(search.Client))
                 {
-                    budgets = budgets.Where(b => b.Client.Contains(search.Keyword, StringComparison.OrdinalIgnoreCase));
+                    budgets = budgets.Where(b => b.Client.Contains(search.Client, StringComparison.OrdinalIgnoreCase));
                 }
 
-                if (search.Done.HasValue)
+                if (search.Date.HasValue)
                 {
-                    budgets = budgets.Where(b => b.TotalCost > 0 == search.Done.Value);
+                    budgets = budgets.Where(b => b.Date.Date == search.Date.Value.Date);
+                }
+
+                if (search.ServiceCost.HasValue)
+                {
+                    budgets = budgets.Where(b => b.ServiceCost == search.ServiceCost.Value);
+                }
+
+                if (search.TotalCost.HasValue)
+                {
+                    budgets = budgets.Where(b => b.TotalCost == search.TotalCost.Value);
                 }
             }
 
@@ -135,6 +145,9 @@ namespace Proge2._1.Services
             };
         }
 
-
+        public async Task<PagedResult<Budget>> ListAsync(int page, int size, BudgetSearch search)
+        {
+            return await List(page, size, search);
+        }
     }
 }

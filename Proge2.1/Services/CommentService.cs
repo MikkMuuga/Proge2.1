@@ -1,39 +1,50 @@
-﻿using Proge2._1.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using Proge2._1.Data;
+using Proge2._1.Data.Repositories;
+using Proge2._1.Extensions;
+using Proge2._1.Models;
+using Proge2._1.Search;
 using Proge2._1.Services.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System;
-using Proge2._1.Data.Repositories;
 
 namespace Proge2._1.Services
 {
     public class CommentService : ICommentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ApplicationDbContext _context;
 
-        public CommentService(IUnitOfWork unitOfWork)
+        public CommentService(IUnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
+            _context = context;
+        }
+
+        public async Task<PagedResult<Comment>> List(int page, int pageSize, CommentSearch search = null)
+        {
+            search ??= new CommentSearch();
+
+            var query = _context.Comments.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search.Content))
+                query = query.Where(c => c.Content.Contains(search.Content));
+
+            if (!string.IsNullOrWhiteSpace(search.User))
+                query = query.Where(c => c.User.Contains(search.User));
+
+            return await query.OrderByDescending(c => c.Id).GetPagedAsync(page, pageSize);
         }
 
         public async Task<PagedResult<Comment>> GetPagedComments(int page, int pageSize)
         {
-            var allComments = await _unitOfWork.CommentRepository.GetAllAsync();
-            var paged = allComments
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
+            return await List(page, pageSize);
+        }
 
-            return new PagedResult<Comment>
-            {
-                Results = paged,
-                TotalCount = allComments.Count(),
-                CurrentPage = page,
-                PageSize = pageSize,
-                PageCount = (int)Math.Ceiling((double)allComments.Count() / pageSize)
-            };
+        public async Task<PagedResult<Comment>> GetPagedComments(int page, int pageSize, CommentSearch search)
+        {
+            return await List(page, pageSize, search);
         }
 
         public async Task<Comment> GetCommentById(int id)

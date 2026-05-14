@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Proge2._1.Search;
 
 namespace Proge2._1.Data.Repositories
 {
@@ -11,25 +12,40 @@ namespace Proge2._1.Data.Repositories
             _context = context;
         }
 
-        public async Task<PagedResult<Materials>> GetPagedAsync(int page, int pageSize)
+        public async Task<PagedResult<Materials>> GetPagedAsync(int page, int pageSize, MaterialSearch search)
         {
-            var result = new PagedResult<Materials>
+            IQueryable<Materials> query = _context.Materials.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(search?.Unit))
+                query = query.Where(m => m.Unit.Contains(search.Unit));
+
+            if (!string.IsNullOrEmpty(search?.Seller))
+                query = query.Where(m => m.Seller.Contains(search.Seller));
+
+            if (search?.MinPrice.HasValue == true)
+                query = query.Where(m => m.Price >= search.MinPrice.Value);
+
+            if (search?.MaxPrice.HasValue == true)
+                query = query.Where(m => m.Price <= search.MaxPrice.Value);
+
+            query = query.OrderBy(m => m.Id);
+
+            var total = await query.CountAsync();
+            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            return new PagedResult<Materials>
             {
+                Results = items,
+                TotalCount = total,
                 CurrentPage = page,
                 PageSize = pageSize,
-                RowCount = await _context.Materials.CountAsync()
+                PageCount = (int)Math.Ceiling((double)total / pageSize)
             };
+        }
 
-            var pageCount = (double)result.RowCount / pageSize;
-            result.PageCount = (int)Math.Ceiling(pageCount);
-
-            var skip = (page - 1) * pageSize;
-            result.Results = await _context.Materials
-                .Skip(skip)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return result;
+        public async Task<PagedResult<Materials>> GetPagedAsync(int page, int pageSize)
+        {
+            return await GetPagedAsync(page, pageSize, new MaterialSearch());
         }
 
         public async Task<Materials> GetByIdAsync(int id)
@@ -63,6 +79,10 @@ namespace Proge2._1.Data.Repositories
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Materials.AnyAsync(e => e.Id == id);
+        }
+        public IQueryable<Materials> GetQueryable()
+        {
+            return _context.Materials.AsQueryable();
         }
     }
 

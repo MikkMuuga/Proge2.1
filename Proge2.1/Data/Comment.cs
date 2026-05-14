@@ -11,5 +11,6 @@ namespace Proge2._1.Data
         [Required]
         [StringLength(512)]
         public string User { get; set; }
+
     }
 }

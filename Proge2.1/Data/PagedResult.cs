@@ -12,7 +12,7 @@ namespace Proge2._1.Data
         public int PageCount { get; internal set; }
         public List<object> Results { get; internal set; }
         public int TotalItems { get; set; }
-        public int TotalPages => (int)Math.Ceiling((decimal)TotalItems / PageSize);
+        public int TotalPages => PageSize == 0 ? 0 : (int)Math.Ceiling((decimal)TotalItems / PageSize);
 
     }
 }

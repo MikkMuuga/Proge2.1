@@ -2,7 +2,9 @@
 {
     public class BudgetSearch
     {
-        public bool? Done { get; set; }
-        public string Keyword { get; set; }
+        public string? Client { get; set; }
+        public DateTime? Date { get; set; }
+        public decimal? ServiceCost { get; set; }
+        public decimal? TotalCost { get; set; }
     }
 }

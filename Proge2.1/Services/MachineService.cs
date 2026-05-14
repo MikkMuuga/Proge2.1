@@ -1,11 +1,11 @@
-﻿using Proge2._1.Data;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Proge2._1.Data;
 using Proge2._1.Data.Repositories;
-using Proge2._1.Models;
+using Proge2._1.Extensions;
+using Proge2._1.Search;
 using Proge2._1.Services.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
 
 namespace Proge2._1.Services
 {
@@ -18,12 +18,38 @@ namespace Proge2._1.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize)
+        public async Task<PagedResult<Machines>> List(int page, int pageSize, MachineSearch search = null)
         {
-            return await _unitOfWork.MachinesRepository.GetPagedAsync(page, pageSize);
+            search ??= new MachineSearch();
+
+            var query = _unitOfWork.MachinesRepository.GetQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search.Workers))
+                query = query.Where(m => m.Workers.Contains(search.Workers));
+
+            if (!string.IsNullOrWhiteSpace(search.Supervision))
+                query = query.Where(m => m.Supervision.Contains(search.Supervision));
+
+            if (search.MinCost.HasValue)
+                query = query.Where(m => m.CostOfMachines >= search.MinCost.Value);
+
+            if (search.MaxCost.HasValue)
+                query = query.Where(m => m.CostOfMachines <= search.MaxCost.Value);
+
+            return await query.OrderBy(m => m.Id).GetPagedAsync(page, pageSize);
         }
 
-        public async Task<Machines?> GetMachineById(int id)
+        public async Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize)
+        {
+            return await List(page, pageSize);
+        }
+
+        public async Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize, MachineSearch search)
+        {
+            return await List(page, pageSize, search);
+        }
+
+        public async Task<Machines> GetMachineById(int id)
         {
             return await _unitOfWork.MachinesRepository.GetByIdAsync(id);
         }
