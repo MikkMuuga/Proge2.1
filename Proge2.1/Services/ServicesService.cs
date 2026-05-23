@@ -17,7 +17,7 @@ namespace Proge2._1.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PagedResults<Servicess>> List(int page, int pageSize, ServiceSearch search = null)
+        public async Task<PagedResult<Servicess>> List(int page, int pageSize, ServiceSearch search = null)
         {
             search ??= new ServiceSearch();
 
@@ -37,7 +37,7 @@ namespace Proge2._1.Services
             var total = await query.CountAsync();
             var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            return new PagedResults<Servicess>
+            return new PagedResult<Servicess>
             {
                 Items = items,
                 TotalCount = total,
@@ -49,12 +49,12 @@ namespace Proge2._1.Services
             };
         }
 
-        public async Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize)
+        public async Task<PagedResult<Servicess>> GetPagedServices(int page, int pageSize)
         {
             return await List(page, pageSize);
         }
 
-        public async Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize, ServiceSearch search)
+        public async Task<PagedResult<Servicess>> GetPagedServices(int page, int pageSize, ServiceSearch search)
         {
             return await List(page, pageSize, search);
         }

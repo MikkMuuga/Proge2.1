@@ -10,11 +10,11 @@ namespace Proge2._1.Services.Interfaces
     {
         Task<Comment> GetCommentById(int id);
         Task<PagedResult<Comment>> GetPagedComments(int page, int pageSize);
+        Task<PagedResult<Comment>> GetPagedComments(int page, int pageSize, CommentSearch search);
         Task AddComment(Comment comment);
         Task UpdateComment(Comment comment);
         Task DeleteComment(int id);
         Task<bool> CommentExists(int id);
-        Task<PagedResult<Comment>> GetPagedComments(int page, int pageSize, CommentSearch search);
 
 
     }

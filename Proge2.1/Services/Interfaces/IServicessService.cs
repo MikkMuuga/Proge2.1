@@ -8,8 +8,8 @@ namespace Proge2._1.Services.Interfaces
 {
     public interface IServicessService
     {
-        Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize);
-        Task<PagedResults<Servicess>> GetPagedServices(int page, int pageSize, ServiceSearch search);
+        Task<PagedResult<Servicess>> GetPagedServices(int page, int pageSize);
+        Task<PagedResult<Servicess>> GetPagedServices(int page, int pageSize, ServiceSearch search);
         Task<Servicess> GetServiceById(int id);
         Task AddService(Servicess service);
         Task UpdateService(Servicess service);

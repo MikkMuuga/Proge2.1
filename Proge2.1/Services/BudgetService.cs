@@ -140,7 +140,7 @@ namespace Proge2._1.Services
 
             return new PagedResult<Budget>
             {
-                Results = pagedBudgets,
+                Items = pagedBudgets,
                 TotalItems = totalItems
             };
         }

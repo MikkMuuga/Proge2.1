@@ -25,7 +25,7 @@ namespace Proge2._1.Controllers
 
             var model = new BudgetIndexModel
             {
-                Budgets = result.Results,
+                Budgets = (IEnumerable<Budget>)result.Results,
                 TotalItems = result.TotalItems,
                 Page = page,
                 Size = size,

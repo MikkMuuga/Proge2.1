@@ -13,12 +13,12 @@ namespace Proge2._1.Data.Repositories
             _context = context;
         }
 
-        public async Task<PagedResults<Servicess>> GetPagedAsync(int page, int pageSize)
+        public async Task<PagedResult<Servicess>> GetPagedAsync(int page, int pageSize)
         {
             return await GetPagedAsync(page, pageSize, new ServiceSearch());
         }
 
-        public async Task<PagedResults<Servicess>> GetPagedAsync(int page, int pageSize, ServiceSearch search)
+        public async Task<PagedResult<Servicess>> GetPagedAsync(int page, int pageSize, ServiceSearch search)
         {
             IQueryable<Servicess> query = _context.Services.AsNoTracking();
             if (!string.IsNullOrEmpty(search?.Transportation))
@@ -35,7 +35,7 @@ namespace Proge2._1.Data.Repositories
             var totalCount = await query.CountAsync();
             var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            return new PagedResults<Servicess>
+            return new PagedResult<Servicess>
             {
                 Items = items,
                 TotalCount = totalCount,

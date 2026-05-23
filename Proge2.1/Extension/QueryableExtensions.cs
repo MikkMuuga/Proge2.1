@@ -9,11 +9,10 @@ namespace Proge2._1.Extensions
         {
             var total = await query.CountAsync();
             var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
             return new PagedResult<T>
             {
-                Results = items,
-                TotalCount = total,
+                Items = items,
+                TotalItems = total,
                 CurrentPage = page,
                 PageSize = pageSize,
                 PageCount = pageSize == 0 ? 0 : (int)Math.Ceiling((double)total / pageSize)

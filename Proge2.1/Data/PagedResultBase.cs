@@ -20,10 +20,9 @@ namespace Proge2._1.Data
     public class PagedResult<T> : PagedResultBase
     {
         public IList<T> Results { get; set; } = new List<T>();
-        public IEnumerable<Budget> Items { get; internal set; }
-        public int TotalItems { get; internal set; }
-        public CustomerIndexModel Search { get; internal set; }
-        public object Data { get; internal set; }
+        public IEnumerable<T> Items { get; set; }
+        public int TotalItems { get; set; }
+        public int TotalPages => PageSize == 0 ? 0 : (int)Math.Ceiling((decimal)TotalItems / PageSize);
     }
 
 
