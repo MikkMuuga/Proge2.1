@@ -176,5 +176,77 @@ namespace Proge.UnitTests.ControllerTests
             Assert.NotNull(result);
             Assert.Equal(material, result.Model);
         }
+        [Fact]
+        public async Task Create_post_should_return_view_when_modelstate_invalid()
+        {
+            var material = new Materials { Id = 1, Unit = "kg", Price = 10.00m, Seller = "Seller 1" };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Create(material) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(material, result.Model);
+        }
+
+        [Fact]
+        public async Task Create_post_should_redirect_when_modelstate_valid()
+        {
+            var material = new Materials { Id = 1, Unit = "kg", Price = 10.00m, Seller = "Seller 1" };
+            _materialServiceMock.Setup(x => x.AddMaterial(material)).Verifiable();
+
+            var result = await _controller.Create(material) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _materialServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_notfound_when_id_mismatch()
+        {
+            var material = new Materials { Id = 2, Unit = "kg", Price = 10.00m, Seller = "Seller 1" };
+
+            var result = await _controller.Edit(1, material);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_view_when_modelstate_invalid()
+        {
+            var material = new Materials { Id = 1, Unit = "kg", Price = 10.00m, Seller = "Seller 1" };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Edit(1, material) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(material, result.Model);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_redirect_when_modelstate_valid()
+        {
+            var material = new Materials { Id = 1, Unit = "kg", Price = 10.00m, Seller = "Seller 1" };
+            _materialServiceMock.Setup(x => x.UpdateMaterial(material)).Verifiable();
+
+            var result = await _controller.Edit(1, material) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _materialServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_should_delete_and_redirect()
+        {
+            int id = 1;
+            _materialServiceMock.Setup(x => x.DeleteMaterial(id)).Verifiable();
+
+            var result = await _controller.DeleteConfirmed(id) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _materialServiceMock.VerifyAll();
+        }
     }
 }

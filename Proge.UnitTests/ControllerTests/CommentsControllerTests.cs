@@ -175,5 +175,77 @@ namespace Proge.UnitTests.ControllerTests
             Assert.NotNull(result);
             Assert.Equal(comment, result.Model);
         }
+        [Fact]
+        public async Task Create_post_should_return_view_when_modelstate_invalid()
+        {
+            var comment = new Comment { Id = 1, Content = "Test", User = "User 1" };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Create(comment) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(comment, result.Model);
+        }
+
+        [Fact]
+        public async Task Create_post_should_redirect_when_modelstate_valid()
+        {
+            var comment = new Comment { Id = 1, Content = "Test", User = "User 1" };
+            _commentServiceMock.Setup(x => x.AddComment(comment)).Verifiable();
+
+            var result = await _controller.Create(comment) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _commentServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_notfound_when_id_mismatch()
+        {
+            var comment = new Comment { Id = 2, Content = "Test", User = "User 1" };
+
+            var result = await _controller.Edit(1, comment);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_view_when_modelstate_invalid()
+        {
+            var comment = new Comment { Id = 1, Content = "Test", User = "User 1" };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Edit(1, comment) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(comment, result.Model);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_redirect_when_modelstate_valid()
+        {
+            var comment = new Comment { Id = 1, Content = "Test", User = "User 1" };
+            _commentServiceMock.Setup(x => x.UpdateComment(comment)).Verifiable();
+
+            var result = await _controller.Edit(1, comment) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _commentServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_should_delete_and_redirect()
+        {
+            int id = 1;
+            _commentServiceMock.Setup(x => x.DeleteComment(id)).Verifiable();
+
+            var result = await _controller.DeleteConfirmed(id) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _commentServiceMock.VerifyAll();
+        }
     }
 }

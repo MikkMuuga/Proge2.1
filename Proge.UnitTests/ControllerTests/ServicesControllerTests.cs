@@ -176,5 +176,80 @@ namespace Proge.UnitTests.ControllerTests
             Assert.NotNull(result);
             Assert.Equal(service, result.Model);
         }
+        [Fact]
+        public async Task Create_post_should_return_view_when_modelstate_invalid()
+        {
+            var service = new Servicess { ServiceId = 1, transportation = "Transport 1", PanelProduction = 100m, montage = "Montage 1" };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Create(service) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(service, result.Model);
+        }
+
+        [Fact]
+        public async Task Create_post_should_redirect_when_modelstate_valid()
+        {
+            var service = new Servicess { ServiceId = 1, transportation = "Transport 1", PanelProduction = 100m, montage = "Montage 1" };
+            _servicesServiceMock.Setup(x => x.AddService(service)).Verifiable();
+
+            var result = await _controller.Create(service) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _servicesServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_notfound_when_id_mismatch()
+        {
+            var service = new Servicess { ServiceId = 2, transportation = "Transport 1", PanelProduction = 100m, montage = "Montage 1" };
+
+            var result = await _controller.Edit(1, service);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_view_when_modelstate_invalid()
+        {
+            // Arrange
+            var service = new Servicess { ServiceId = 1, transportation = "Transport 1", PanelProduction = 100m, montage = "Montage 1" };
+            _controller.ModelState.AddModelError("key", "error");
+
+            // Act
+            var result = await _controller.Edit(1, service) as ViewResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(service, result.Model);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_redirect_when_modelstate_valid()
+        {
+            var service = new Servicess { ServiceId = 1, transportation = "Transport 1", PanelProduction = 100m, montage = "Montage 1" };
+            _servicesServiceMock.Setup(x => x.UpdateService(service)).Verifiable();
+
+            var result = await _controller.Edit(1, service) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _servicesServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_should_delete_and_redirect()
+        {
+            int id = 1;
+            _servicesServiceMock.Setup(x => x.DeleteService(id)).Verifiable();
+
+            var result = await _controller.DeleteConfirmed(id) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _servicesServiceMock.VerifyAll();
+        }
     }
 }

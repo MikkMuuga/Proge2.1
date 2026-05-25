@@ -176,5 +176,77 @@ namespace Proge.UnitTests.ControllerTests
             Assert.NotNull(result);
             Assert.Equal(machine, result.Model);
         }
+        [Fact]
+        public async Task Create_post_should_return_view_when_modelstate_invalid()
+        {
+            var machine = new Machines { Id = 1, Workers = "Worker 1", Supervision = "Super 1", CostOfMachines = 100 };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Create(machine) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(machine, result.Model);
+        }
+
+        [Fact]
+        public async Task Create_post_should_redirect_when_modelstate_valid()
+        {
+            var machine = new Machines { Id = 1, Workers = "Worker 1", Supervision = "Super 1", CostOfMachines = 100 };
+            _machineServiceMock.Setup(x => x.AddMachine(machine)).Verifiable();
+
+            var result = await _controller.Create(machine) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _machineServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_notfound_when_id_mismatch()
+        {
+            var machine = new Machines { Id = 2, Workers = "Worker 1", Supervision = "Super 1", CostOfMachines = 100 };
+
+            var result = await _controller.Edit(1, machine);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_view_when_modelstate_invalid()
+        {
+            var machine = new Machines { Id = 1, Workers = "Worker 1", Supervision = "Super 1", CostOfMachines = 100 };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Edit(1, machine) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(machine, result.Model);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_redirect_when_modelstate_valid()
+        {
+            var machine = new Machines { Id = 1, Workers = "Worker 1", Supervision = "Super 1", CostOfMachines = 100 };
+            _machineServiceMock.Setup(x => x.UpdateMachine(machine)).Verifiable();
+
+            var result = await _controller.Edit(1, machine) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _machineServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_should_delete_and_redirect()
+        {
+            int id = 1;
+            _machineServiceMock.Setup(x => x.DeleteMachine(id)).Verifiable();
+
+            var result = await _controller.DeleteConfirmed(id) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _machineServiceMock.VerifyAll();
+        }
     }
 }

@@ -176,5 +176,77 @@ namespace Proge.UnitTests.ControllerTests
             Assert.NotNull(result);
             Assert.Equal(customer, result.Model);
         }
+        [Fact]
+        public async Task Create_post_should_return_view_when_modelstate_invalid()
+        {
+            var customer = new Customer { Id = 1, Name = "Test", Contact = "Contact 1", Date = DateTime.Now };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Create(customer) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(customer, result.Model);
+        }
+
+        [Fact]
+        public async Task Create_post_should_redirect_when_modelstate_valid()
+        {
+            var customer = new Customer { Id = 1, Name = "Test", Contact = "Contact 1", Date = DateTime.Now };
+            _customerServiceMock.Setup(x => x.AddCustomer(customer)).Verifiable();
+
+            var result = await _controller.Create(customer) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _customerServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_notfound_when_id_mismatch()
+        {
+            var customer = new Customer { Id = 2, Name = "Test", Contact = "Contact 1", Date = DateTime.Now };
+
+            var result = await _controller.Edit(1, customer);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_view_when_modelstate_invalid()
+        {
+            var customer = new Customer { Id = 1, Name = "Test", Contact = "Contact 1", Date = DateTime.Now };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Edit(1, customer) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(customer, result.Model);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_redirect_when_modelstate_valid()
+        {
+            var customer = new Customer { Id = 1, Name = "Test", Contact = "Contact 1", Date = DateTime.Now };
+            _customerServiceMock.Setup(x => x.UpdateCustomer(customer)).Verifiable();
+
+            var result = await _controller.Edit(1, customer) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _customerServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_should_delete_and_redirect()
+        {
+            int id = 1;
+            _customerServiceMock.Setup(x => x.DeleteCustomer(id)).Verifiable();
+
+            var result = await _controller.DeleteConfirmed(id) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _customerServiceMock.VerifyAll();
+        }
     }
 }

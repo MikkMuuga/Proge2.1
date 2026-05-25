@@ -134,17 +134,14 @@ namespace Proge.UnitTests.ControllerTests
         [Fact]
         public async Task Edit_should_return_view_with_budget()
         {
-            // Arrange
             var budget = new Budget { Id = 1, Client = "Test Budget", Date = DateTime.Now };
 
             _budgetServiceMock
                 .Setup(x => x.GetBudgetByIdAsync(1))
                 .ReturnsAsync(budget);
 
-            // Act
             var result = await _controller.Edit(1) as ViewResult;
 
-            // Assert
             Assert.NotNull(result);
             Assert.Equal(budget, result.Model);
         }
@@ -152,29 +149,99 @@ namespace Proge.UnitTests.ControllerTests
         [Fact]
         public async Task Delete_should_return_notfound_when_id_is_null()
         {
-            // Act
             var result = await _controller.Delete(null);
 
-            // Assert
             Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
         public async Task Delete_should_return_view_with_budget()
         {
-            // Arrange
+            // arrange
             var budget = new Budget { Id = 1, Client = "Test Budget", Date = DateTime.Now };
 
             _budgetServiceMock
                 .Setup(x => x.GetBudgetByIdAsync(1))
                 .ReturnsAsync(budget);
-
-            // Act
+            // act
             var result = await _controller.Delete(1) as ViewResult;
 
-            // Assert
+            //assert
             Assert.NotNull(result);
             Assert.Equal(budget, result.Model);
         }
+        [Fact]
+        public async Task Create_post_should_return_view_when_modelstate_invalid()
+        {
+            var budget = new Budget { Id = 1, Client = "Test", Date = DateTime.Now };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Create(budget) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(budget, result.Model);
+        }
+
+        [Fact]
+        public async Task Create_post_should_redirect_when_modelstate_valid()
+        {
+            var budget = new Budget { Id = 1, Client = "Test", Date = DateTime.Now };
+            _budgetServiceMock.Setup(x => x.AddBudgetAsync(budget)).Verifiable();
+
+            var result = await _controller.Create(budget) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _budgetServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_notfound_when_id_mismatch()
+        {
+            var budget = new Budget { Id = 2, Client = "Test", Date = DateTime.Now };
+
+            var result = await _controller.Edit(1, budget);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_return_view_when_modelstate_invalid()
+        {
+            var budget = new Budget { Id = 1, Client = "Test", Date = DateTime.Now };
+            _controller.ModelState.AddModelError("key", "error");
+
+            var result = await _controller.Edit(1, budget) as ViewResult;
+
+            Assert.NotNull(result);
+            Assert.Equal(budget, result.Model);
+        }
+
+        [Fact]
+        public async Task Edit_post_should_redirect_when_modelstate_valid()
+        {
+            var budget = new Budget { Id = 1, Client = "Test", Date = DateTime.Now };
+            _budgetServiceMock.Setup(x => x.UpdateBudgetAsync(budget)).Verifiable();
+
+            var result = await _controller.Edit(1, budget) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _budgetServiceMock.VerifyAll();
+        }
+
+        [Fact]
+        public async Task DeleteConfirmed_should_delete_and_redirect()
+        {
+            int id = 1;
+            _budgetServiceMock.Setup(x => x.DeleteBudgetAsync(id)).Verifiable();
+
+            var result = await _controller.DeleteConfirmed(id) as RedirectToActionResult;
+
+            Assert.NotNull(result);
+            Assert.Equal("Index", result.ActionName);
+            _budgetServiceMock.VerifyAll();
+        }
     }
 }
+    
