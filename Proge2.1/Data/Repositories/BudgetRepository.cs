@@ -29,7 +29,11 @@ namespace Proge2._1.Data.Repositories
 
         public async Task UpdateBudgetAsync(Budget budget)
         {
-            _context.Budgets.Update(budget);
+            var existing = await _context.Budgets.FindAsync(budget.Id);
+            if (existing != null)
+            {
+                _context.Entry(existing).CurrentValues.SetValues(budget);
+            }
             await Task.CompletedTask;
         }
 
