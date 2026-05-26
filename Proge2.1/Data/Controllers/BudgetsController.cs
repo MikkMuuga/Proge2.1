@@ -6,6 +6,7 @@ using Proge2._1.Models; // <-- where BudgetIndexModel lives
 using System;
 using System.Threading.Tasks;
 using Proge2._1.Data;
+using System.Globalization;
 
 namespace Proge2._1.Controllers
 {
@@ -58,6 +59,9 @@ namespace Proge2._1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Budget budget)
         {
+            foreach (var error in ModelState)
+                Console.WriteLine($">>> MODELSTATE: {error.Key} = {string.Join(", ", error.Value.Errors.Select(e => e.ErrorMessage))}");
+
             if (ModelState.IsValid)
             {
                 try
@@ -138,5 +142,6 @@ namespace Proge2._1.Controllers
             var budget = await _budgetService.GetBudgetByIdAsync(id);
             return budget != null;
         }
+
     }
 }

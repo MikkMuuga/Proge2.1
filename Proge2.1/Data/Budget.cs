@@ -3,14 +3,16 @@
 namespace Proge2._1.Data
 {
     public class Budget : Entity
-
     {
         [Required]
         [StringLength(55)]
-        public required string Client { get; set; }
+        public string Client { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
+
         public decimal ServiceCost { get; set; }
+
         public decimal TotalCost { get; set; }
     }
 }
