@@ -41,7 +41,7 @@ namespace Proge2._1.Services
 
         public async Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize)
         {
-            return await List(page, pageSize);
+            return await _unitOfWork.MachinesRepository.GetPagedAsync(page, pageSize);
         }
 
         public async Task<PagedResult<Machines>> GetPagedMachines(int page, int pageSize, MachineSearch search)
@@ -105,6 +105,13 @@ namespace Proge2._1.Services
         public async Task<bool> MachineExists(int id)
         {
             return await _unitOfWork.MachinesRepository.ExistsAsync(id);
+        }
+        public async Task Save(Machines machine)
+        {
+            if (machine.Id == 0)
+                await AddMachine(machine);
+            else
+                await UpdateMachine(machine);
         }
     }
 }

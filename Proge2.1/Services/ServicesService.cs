@@ -51,7 +51,7 @@ namespace Proge2._1.Services
 
         public async Task<PagedResult<Servicess>> GetPagedServices(int page, int pageSize)
         {
-            return await List(page, pageSize);
+            return await _unitOfWork.ServicesRepository.GetPagedAsync(page, pageSize);
         }
 
         public async Task<PagedResult<Servicess>> GetPagedServices(int page, int pageSize, ServiceSearch search)
@@ -115,6 +115,13 @@ namespace Proge2._1.Services
         public async Task<bool> ServiceExists(int id)
         {
             return await _unitOfWork.ServicesRepository.ExistsAsync(id);
+        }
+        public async Task Save(Servicess service)
+        {
+            if (service.ServiceId == 0)
+                await AddService(service);
+            else
+                await UpdateService(service);
         }
     }
 }

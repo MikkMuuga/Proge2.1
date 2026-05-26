@@ -12,6 +12,7 @@ namespace Proge2._1.Services.Interfaces
         Task AddMachine(Machines machine);
         Task UpdateMachine(Machines machine);
         Task DeleteMachine(int id);
+        Task Save(Machines machine);
         Task<bool> MachineExists(int id);
     }
 }

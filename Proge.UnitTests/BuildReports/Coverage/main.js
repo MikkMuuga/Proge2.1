@@ -290,7 +290,6 @@ var assemblies = [
   {
     "name": "Proge2.1",
     "classes": [
-      { "name": "MaterialService", "rp": "Proge2.1_MaterialService.html", "cl": 0, "ucl": 65, "cal": 65, "tl": 104, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2_1.Data.SeedData", "rp": "Proge2.1_SeedData.html", "cl": 0, "ucl": 94, "cal": 94, "tl": 123, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Components.PagerViewComponent", "rp": "Proge2.1_PagerViewComponent.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Controllers.BudgetsController", "rp": "Proge2.1_BudgetsController.html", "cl": 64, "ucl": 15, "cal": 79, "tl": 142, "cb": 19, "tb": 24, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -300,15 +299,15 @@ var assemblies = [
       { "name": "Proge2._1.Controllers.MachinesController", "rp": "Proge2.1_MachinesController.html", "cl": 63, "ucl": 8, "cal": 71, "tl": 136, "cb": 19, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Controllers.MaterialsController", "rp": "Proge2.1_MaterialsController.html", "cl": 63, "ucl": 8, "cal": 71, "tl": 126, "cb": 19, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Controllers.ServicesController", "rp": "Proge2.1_ServicesController.html", "cl": 63, "ucl": 8, "cal": 71, "tl": 126, "cb": 19, "tb": 22, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Data.ApplicationDbContext", "rp": "Proge2.1_ApplicationDbContext.html", "cl": 0, "ucl": 9, "cal": 9, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Data.Budget", "rp": "Proge2.1_Budget.html", "cl": 2, "ucl": 2, "cal": 4, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Data.ApplicationDbContext", "rp": "Proge2.1_ApplicationDbContext.html", "cl": 9, "ucl": 0, "cal": 9, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Data.Budget", "rp": "Proge2.1_Budget.html", "cl": 3, "ucl": 1, "cal": 4, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Comment", "rp": "Proge2.1_Comment.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Customer", "rp": "Proge2.1_Customer.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 17, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Entity", "rp": "Proge2.1_Entity.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 7, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Machines", "rp": "Proge2.1_Machines.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 13, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Materials", "rp": "Proge2.1_Materials.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 15, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.PagedResult\u003CT\u003E", "rp": "Proge2.1_PagedResult_1.html", "cl": 3, "ucl": 1, "cal": 4, "tl": 63, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Data.PagedResultBase", "rp": "Proge2.1_PagedResultBase.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 63, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Data.PagedResultBase", "rp": "Proge2.1_PagedResultBase.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 63, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.PaginationModel\u003CT\u003E", "rp": "Proge2.1_PaginationModel_1.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.PagingExtensions", "rp": "Proge2.1_PagingExtensions.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 63, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.PagingExtensionsV2", "rp": "Proge2.1_PagingExtensionsV2.html", "cl": 0, "ucl": 13, "cal": 13, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -316,12 +315,12 @@ var assemblies = [
       { "name": "Proge2._1.Data.Repositories.BudgetRepository", "rp": "Proge2.1_BudgetRepository.html", "cl": 0, "ucl": 27, "cal": 27, "tl": 50, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Repositories.CommentRepository", "rp": "Proge2.1_CommentRepository.html", "cl": 0, "ucl": 24, "cal": 24, "tl": 45, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Repositories.CustomerRepository", "rp": "Proge2.1_CustomerRepository.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 90, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Data.Repositories.MachinesRepository", "rp": "Proge2.1_MachinesRepository.html", "cl": 0, "ucl": 46, "cal": 46, "tl": 84, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Data.Repositories.MaterialsRepository", "rp": "Proge2.1_MaterialsRepository.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 89, "cb": 0, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Data.Repositories.MachinesRepository", "rp": "Proge2.1_MachinesRepository.html", "cl": 0, "ucl": 46, "cal": 46, "tl": 82, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Data.Repositories.MaterialsRepository", "rp": "Proge2.1_MaterialsRepository.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 90, "cb": 0, "tb": 20, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Repositories.ServicessRepository", "rp": "Proge2.1_ServicessRepository.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 88, "cb": 0, "tb": 18, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Repositories.UnitOfWork", "rp": "Proge2.1_UnitOfWork.html", "cl": 0, "ucl": 56, "cal": 56, "tl": 91, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Data.Servicess", "rp": "Proge2.1_Servicess.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 21, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Extensions.QueryableExtensions", "rp": "Proge2.1_QueryableExtensions.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 22, "cb": 0, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Extensions.QueryableExtensions", "rp": "Proge2.1_QueryableExtensions.html", "cl": 16, "ucl": 0, "cal": 16, "tl": 26, "cb": 1, "tb": 2, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Migrations.AddCommentIdColumn", "rp": "Proge2.1_AddCommentIdColumn.html", "cl": 0, "ucl": 447, "cal": 447, "tl": 514, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Migrations.ApplicationDbContextModelSnapshot", "rp": "Proge2.1_ApplicationDbContextModelSnapshot.html", "cl": 0, "ucl": 392, "cal": 392, "tl": 431, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Migrations.Budget", "rp": "Proge2.1_Budget.2.html", "cl": 0, "ucl": 512, "cal": 512, "tl": 580, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -341,17 +340,18 @@ var assemblies = [
       { "name": "Proge2._1.Models.MaterialIndexModel", "rp": "Proge2.1_MaterialIndexModel.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Models.ServiceIndexModel", "rp": "Proge2.1_ServiceIndexModel.html", "cl": 3, "ucl": 3, "cal": 6, "tl": 16, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Program", "rp": "Proge2.1_Program.html", "cl": 0, "ucl": 66, "cal": 66, "tl": 106, "cb": 0, "tb": 4, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Search.BudgetSearch", "rp": "Proge2.1_BudgetSearch.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Search.CommentSearch", "rp": "Proge2.1_CommentSearch.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Search.BudgetSearch", "rp": "Proge2.1_BudgetSearch.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Search.CommentSearch", "rp": "Proge2.1_CommentSearch.html", "cl": 2, "ucl": 0, "cal": 2, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Search.CustomerSearch", "rp": "Proge2.1_CustomerSearch.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Search.MachineSearch", "rp": "Proge2.1_MachineSearch.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Search.MaterialSearch", "rp": "Proge2.1_MaterialSearch.html", "cl": 0, "ucl": 4, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Search.MaterialSearch", "rp": "Proge2.1_MaterialSearch.html", "cl": 2, "ucl": 2, "cal": 4, "tl": 10, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Search.ServiceSearch", "rp": "Proge2.1_ServiceSearch.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 9, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Services.BudgetService", "rp": "Proge2.1_BudgetService.html", "cl": 0, "ucl": 97, "cal": 97, "tl": 153, "cb": 0, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Services.CommentService", "rp": "Proge2.1_CommentService.html", "cl": 0, "ucl": 63, "cal": 63, "tl": 109, "cb": 0, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Services.CustomerService", "rp": "Proge2.1_CustomerService.html", "cl": 0, "ucl": 88, "cal": 88, "tl": 150, "cb": 0, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Services.MachineService", "rp": "Proge2.1_MachineService.html", "cl": 0, "ucl": 65, "cal": 65, "tl": 110, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
-      { "name": "Proge2._1.Services.ServicesService", "rp": "Proge2.1_ServicesService.html", "cl": 0, "ucl": 75, "cal": 75, "tl": 120, "cb": 0, "tb": 10, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Services.BudgetService", "rp": "Proge2.1_BudgetService.html", "cl": 65, "ucl": 37, "cal": 102, "tl": 160, "cb": 9, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Services.CommentService", "rp": "Proge2.1_CommentService.html", "cl": 55, "ucl": 13, "cal": 68, "tl": 116, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Services.CustomerService", "rp": "Proge2.1_CustomerService.html", "cl": 50, "ucl": 43, "cal": 93, "tl": 157, "cb": 6, "tb": 16, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Services.MachineService", "rp": "Proge2.1_MachineService.html", "cl": 42, "ucl": 28, "cal": 70, "tl": 117, "cb": 2, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Services.MaterialService", "rp": "Proge2.1_MaterialService.html", "cl": 57, "ucl": 13, "cal": 70, "tl": 116, "cb": 2, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "Proge2._1.Services.ServicesService", "rp": "Proge2.1_ServicesService.html", "cl": 42, "ucl": 38, "cal": 80, "tl": 127, "cb": 2, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Views.Shared._HeaderModel", "rp": "Proge2.1__HeaderModel.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Views.Shared._LoginPartialModel", "rp": "Proge2.1__LoginPartialModel.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "Proge2._1.Views.Shared._SideBarModel", "rp": "Proge2.1__SideBarModel.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 12, "cb": 0, "tb": 0, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -384,7 +384,7 @@ var riskHotspots = [
       { "value": 16, "exceeded": true },
     ]},
   {
-    "assembly": "Proge2.1", "class": "Proge2._1.Data.Repositories.MaterialsRepository", "reportPath": "Proge2.1_MaterialsRepository.html", "methodName": "GetPagedAsync()", "methodShortName": "GetPagedAsync()", "fileIndex": 0, "line": 16,
+    "assembly": "Proge2.1", "class": "Proge2._1.Data.Repositories.MaterialsRepository", "reportPath": "Proge2.1_MaterialsRepository.html", "methodName": "GetPagedAsync()", "methodShortName": "GetPagedAsync()", "fileIndex": 0, "line": 17,
     "metrics": [
       { "value": 272, "exceeded": true },
       { "value": 16, "exceeded": true },
@@ -394,18 +394,6 @@ var riskHotspots = [
     "metrics": [
       { "value": 210, "exceeded": true },
       { "value": 14, "exceeded": false },
-    ]},
-  {
-    "assembly": "Proge2.1", "class": "MaterialService", "reportPath": "Proge2.1_MaterialService.html", "methodName": "List()", "methodShortName": "List()", "fileIndex": 0, "line": 17,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
-    ]},
-  {
-    "assembly": "Proge2.1", "class": "Proge2._1.Services.BudgetService", "reportPath": "Proge2.1_BudgetService.html", "methodName": "List()", "methodShortName": "List()", "fileIndex": 0, "line": 107,
-    "metrics": [
-      { "value": 110, "exceeded": true },
-      { "value": 10, "exceeded": false },
     ]},
   {
     "assembly": "Proge2.1", "class": "Proge2._1.Services.CustomerService", "reportPath": "Proge2.1_CustomerService.html", "methodName": "List()", "methodShortName": "List()", "fileIndex": 0, "line": 23,
@@ -420,16 +408,16 @@ var riskHotspots = [
       { "value": 10, "exceeded": false },
     ]},
   {
-    "assembly": "Proge2.1", "class": "Proge2._1.Services.ServicesService", "reportPath": "Proge2.1_ServicesService.html", "methodName": "List()", "methodShortName": "List()", "fileIndex": 0, "line": 21,
+    "assembly": "Proge2.1", "class": "Proge2._1.Services.MaterialService", "reportPath": "Proge2.1_MaterialService.html", "methodName": "List()", "methodShortName": "List()", "fileIndex": 0, "line": 21,
     "metrics": [
       { "value": 110, "exceeded": true },
       { "value": 10, "exceeded": false },
     ]},
   {
-    "assembly": "Proge2.1", "class": "Proge2._1.Services.CommentService", "reportPath": "Proge2.1_CommentService.html", "methodName": "List()", "methodShortName": "List()", "fileIndex": 0, "line": 26,
+    "assembly": "Proge2.1", "class": "Proge2._1.Services.ServicesService", "reportPath": "Proge2.1_ServicesService.html", "methodName": "List()", "methodShortName": "List()", "fileIndex": 0, "line": 21,
     "metrics": [
-      { "value": 42, "exceeded": true },
-      { "value": 6, "exceeded": false },
+      { "value": 110, "exceeded": true },
+      { "value": 10, "exceeded": false },
     ]},
 ];
 

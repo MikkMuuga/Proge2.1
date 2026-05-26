@@ -146,5 +146,12 @@ namespace Proge2._1.Services
         {
             return await _unitOfWork.CustomerRepository.GetPagedAsync(page, pageSize, search);
         }
+        public async Task Save(Customer customer)
+        {
+            if (customer.Id == 0)
+                await CreateCustomerAsync(customer);
+            else
+                await UpdateCustomerAsync(customer);
+        }
     }
 }

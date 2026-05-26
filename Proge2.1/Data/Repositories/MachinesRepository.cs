@@ -33,11 +33,9 @@ namespace Proge2._1.Data.Repositories
             return result;
         }
 
-        // Implemented to satisfy IMachinesRepository.GetPagedAsync(int, int)
         public async Task<PagedResult<Machines>> GetPagedAsync(int page, int pageSize)
         {
-            // Delegate to the search overload with a default search
-            return await GetPagedAsync(page, pageSize, new Search.MachineSearch());
+            return await GetQueryable().OrderBy(m => m.Id).GetPagedAsync(page, pageSize);
         }
 
         public async Task<Machines?> GetByIdAsync(int id)

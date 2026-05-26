@@ -12,6 +12,7 @@ namespace Proge2._1.Services.Interfaces
         Task UpdateMaterial(Materials material);
         Task DeleteMaterial(int id);
         Task<bool> MaterialExists(int id);
+        Task Save(Materials material);
         Task<PagedResult<Materials>> GetPagedMaterials(int page, int pageSize);
         Task<PagedResult<Materials>> GetPagedMaterials(int page, int pageSize, MaterialSearch search);
     }

@@ -18,6 +18,7 @@ namespace Proge2._1.Services
         Task<bool> CustomerExists(int customerId);
         Task UpdateCustomer(Customer customer);
         Task AddCustomer(Customer customer);
+        Task Save(Customer customer);
         Task<PagedResult<Customer>> GetPagedCustomers(int page, int pageSize);
         Task<PagedResult<Customer>> GetPagedCustomers(int page, int pageSize, CustomerSearch search);
 

@@ -14,6 +14,7 @@ namespace Proge2._1.Services.Interfaces
         Task AddService(Servicess service);
         Task UpdateService(Servicess service);
         Task DeleteService(int id);
+        Task Save(Servicess service);
         Task<bool> ServiceExists(int id);
     }
 }

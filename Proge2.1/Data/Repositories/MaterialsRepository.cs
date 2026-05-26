@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Proge2._1.Extensions;
 using Proge2._1.Search;
 
 namespace Proge2._1.Data.Repositories
@@ -45,7 +46,7 @@ namespace Proge2._1.Data.Repositories
 
         public async Task<PagedResult<Materials>> GetPagedAsync(int page, int pageSize)
         {
-            return await GetPagedAsync(page, pageSize, new MaterialSearch());
+            return await GetQueryable().OrderBy(m => m.Id).GetPagedAsync(page, pageSize);
         }
 
         public async Task<Materials> GetByIdAsync(int id)

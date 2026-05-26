@@ -76,6 +76,13 @@ namespace Proge2._1.Services
                 throw;
             }
         }
+        public async Task Save(Budget budget)
+        {
+            if (budget.Id == 0)
+                await AddBudgetAsync(budget);
+            else
+                await UpdateBudgetAsync(budget);
+        }
 
         public decimal CalculateTotalCost(Budget budget)
         {

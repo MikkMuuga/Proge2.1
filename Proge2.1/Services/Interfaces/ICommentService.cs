@@ -14,6 +14,7 @@ namespace Proge2._1.Services.Interfaces
         Task AddComment(Comment comment);
         Task UpdateComment(Comment comment);
         Task DeleteComment(int id);
+        Task Save(Comment comment);
         Task<bool> CommentExists(int id);
 
 

@@ -105,5 +105,12 @@ namespace Proge2._1.Services
             var comment = await _unitOfWork.CommentRepository.GetByIdAsync(id);
             return comment != null;
         }
+        public async Task Save(Comment comment)
+        {
+            if (comment.Id == 0)
+                await AddComment(comment);
+            else
+                await UpdateComment(comment);
+        }
     }
 }

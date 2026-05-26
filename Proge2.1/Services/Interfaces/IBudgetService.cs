@@ -17,6 +17,7 @@ namespace Proge2._1.Services.Interfaces
         string? GetBudgetById(int value);
         void DeleteBudget(int id);
         void AddBudget(Budget budget);
+        Task Save(Budget budget);
         Task<PagedResult<Budget>> List(int page, int size, BudgetSearch search);
         Task<PagedResult<Budget>> ListAsync(int page, int size, BudgetSearch search);
 
