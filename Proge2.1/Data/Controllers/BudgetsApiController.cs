@@ -19,7 +19,7 @@ namespace Proge2._1.Controllers
         public async Task<IEnumerable<Budget>> Get()
         {
             var result = await _service.ListAsync(1, 10000, new Search.BudgetSearch());
-            return result.Results;
+            return result.Items;
         }
 
         [HttpGet("{id}")]

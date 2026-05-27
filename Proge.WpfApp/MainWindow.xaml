@@ -1,0 +1,44 @@
+﻿<Window x:Class="Proge.WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Budgets" Height="450" Width="700">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="280"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- VASAK: nimekiri + nupud -->
+        <DockPanel Grid.Column="0" Margin="0,0,10,0">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,5,0,0">
+                <Button Content="New"    Command="{Binding NewCommand}"    Width="70" Margin="0,0,5,0"/>
+                <Button Content="Delete" Command="{Binding DeleteCommand}" Width="70"/>
+            </StackPanel>
+            <ListBox ItemsSource="{Binding Lists}"
+                     SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                     DisplayMemberPath="Client"/>
+        </DockPanel>
+
+        <!-- PAREM: muutmisvorm -->
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="Client:"/>
+            <TextBox Text="{Binding SelectedItem.Client, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,2,0,8"/>
+
+            <TextBlock Text="Date:"/>
+            <DatePicker SelectedDate="{Binding SelectedItem.Date, Mode=TwoWay}"
+                        Margin="0,2,0,8"/>
+
+            <TextBlock Text="Service Cost:"/>
+            <TextBox Text="{Binding SelectedItem.ServiceCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,2,0,8"/>
+
+            <TextBlock Text="Total Cost:"/>
+            <TextBox Text="{Binding SelectedItem.TotalCost, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,2,0,8"/>
+
+            <Button Content="Save" Command="{Binding SaveCommand}"
+                    HorizontalAlignment="Left" Width="70"/>
+        </StackPanel>
+    </Grid>
+</Window>

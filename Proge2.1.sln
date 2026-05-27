@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proge.UnitTests", "Proge.Un
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proge.IntegrationTests", "Proge.IntegrationTests\Proge.IntegrationTests.csproj", "{A00F2893-0F3E-464B-848A-1F4E431D2F83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proge.WpfApp", "Proge.WpfApp\Proge.WpfApp.csproj", "{011D0C0B-ED3A-4448-81A5-9CEACA51182F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proge.PublicAPI", "Proge.PublicAPI\Proge.PublicAPI.csproj", "{4AC396CE-ADED-40AB-861D-FBF16EA7E712}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{A00F2893-0F3E-464B-848A-1F4E431D2F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A00F2893-0F3E-464B-848A-1F4E431D2F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A00F2893-0F3E-464B-848A-1F4E431D2F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{011D0C0B-ED3A-4448-81A5-9CEACA51182F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{011D0C0B-ED3A-4448-81A5-9CEACA51182F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{011D0C0B-ED3A-4448-81A5-9CEACA51182F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{011D0C0B-ED3A-4448-81A5-9CEACA51182F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AC396CE-ADED-40AB-861D-FBF16EA7E712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AC396CE-ADED-40AB-861D-FBF16EA7E712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AC396CE-ADED-40AB-861D-FBF16EA7E712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AC396CE-ADED-40AB-861D-FBF16EA7E712}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
