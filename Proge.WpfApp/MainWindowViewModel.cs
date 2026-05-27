@@ -16,6 +16,7 @@ namespace Proge.WpfApp
         public ICommand SaveCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
         public Predicate<Budget> ConfirmDelete { get; set; }
+        public Action<string> OnError { get; set; }
 
         private readonly IApiClient _apiClient;
 
@@ -36,7 +37,12 @@ namespace Proge.WpfApp
             SaveCommand = new RelayCommand<Budget>(
                 async list =>
                 {
-                    await _apiClient.Save(SelectedItem);
+                    var result = await _apiClient.Save(SelectedItem);
+                    if (!result.IsSuccess)
+                    {
+                        OnError?.Invoke(result.ErrorMessage);
+                        return;
+                    }
                     await Load();
                 },
                 list => SelectedItem != null
@@ -47,10 +53,14 @@ namespace Proge.WpfApp
                 {
                     if (ConfirmDelete != null)
                     {
-                        var result = ConfirmDelete(SelectedItem);
-                        if (!result) return;
+                        if (!ConfirmDelete(SelectedItem)) return;
                     }
-                    await _apiClient.Delete(SelectedItem.Id);
+                    var result = await _apiClient.Delete(SelectedItem.Id);
+                    if (!result.IsSuccess)
+                    {
+                        OnError?.Invoke(result.ErrorMessage);
+                        return;
+                    }
                     Lists.Remove(SelectedItem);
                     SelectedItem = null;
                 },
@@ -60,9 +70,14 @@ namespace Proge.WpfApp
 
         public async Task Load()
         {
+            var result = await _apiClient.List();
+            if (!result.IsSuccess)
+            {
+                OnError?.Invoke(result.ErrorMessage);
+                return;
+            }
             Lists.Clear();
-            var lists = await _apiClient.List();
-            foreach (var item in lists)
+            foreach (var item in result.Value)
             {
                 Lists.Add(item);
             }

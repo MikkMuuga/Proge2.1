@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Json;
-using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -24,28 +23,52 @@ namespace Proge.PublicAPI
             _httpClient.BaseAddress = new Uri("https://localhost:7123/api/");
         }
 
-        public async Task<List<Budget>> List()
+        public async Task<Result<List<Budget>>> List()
         {
-            var response = await _httpClient.GetAsync("Budgets");
-            var content = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<List<Budget>>(content, _jsonOptions);
-            return result ?? new List<Budget>();
+            try
+            {
+                var response = await _httpClient.GetAsync("Budgets");
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<List<Budget>>(content, _jsonOptions);
+                return Result<List<Budget>>.Success(result ?? new List<Budget>());
+            }
+            catch (Exception ex)
+            {
+                return Result<List<Budget>>.Failure(ex.Message);
+            }
         }
 
-        public async Task Save(Budget budget)
+        public async Task<Result> Save(Budget budget)
         {
-            HttpResponseMessage response;
-            if (budget.Id == 0)
-                response = await _httpClient.PostAsJsonAsync("Budgets", budget);
-            else
-                response = await _httpClient.PutAsJsonAsync("Budgets/" + budget.Id, budget);
+            try
+            {
+                HttpResponseMessage response;
+                if (budget.Id == 0)
+                    response = await _httpClient.PostAsJsonAsync("Budgets", budget);
+                else
+                    response = await _httpClient.PutAsJsonAsync("Budgets/" + budget.Id, budget);
 
-            response.EnsureSuccessStatusCode();
+                response.EnsureSuccessStatusCode();
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure(ex.Message);
+            }
         }
 
-        public async Task Delete(int id)
+        public async Task<Result> Delete(int id)
         {
-            await _httpClient.DeleteAsync("Budgets/" + id);
+            try
+            {
+                var response = await _httpClient.DeleteAsync("Budgets/" + id);
+                response.EnsureSuccessStatusCode();
+                return Result.Success();
+            }
+            catch (Exception ex)
+            {
+                return Result.Failure(ex.Message);
+            }
         }
     }
 }
