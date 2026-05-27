@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proge.WpfApp", "Proge.WpfAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proge.PublicAPI", "Proge.PublicAPI\Proge.PublicAPI.csproj", "{4AC396CE-ADED-40AB-861D-FBF16EA7E712}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proge.WpfApp.UnitTests", "Proge.WpfApp.UnitTests\Proge.WpfApp.UnitTests.csproj", "{E26C9BA5-5526-49B4-BBAD-8AD3B8D07819}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{4AC396CE-ADED-40AB-861D-FBF16EA7E712}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AC396CE-ADED-40AB-861D-FBF16EA7E712}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AC396CE-ADED-40AB-861D-FBF16EA7E712}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E26C9BA5-5526-49B4-BBAD-8AD3B8D07819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E26C9BA5-5526-49B4-BBAD-8AD3B8D07819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E26C9BA5-5526-49B4-BBAD-8AD3B8D07819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E26C9BA5-5526-49B4-BBAD-8AD3B8D07819}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
