@@ -15,9 +15,11 @@ namespace Proge.WinFormsApp.UnitTests
         {
             _mockApiClient = new Mock<IApiClient>();
             _mockView = new Mock<IBudgetView>();
+
             _mockApiClient
                 .Setup(x => x.List())
                 .ReturnsAsync(Result<List<Budget>>.Success(new List<Budget>()));
+
             _presenter = new BudgetPresenter(_mockView.Object, _mockApiClient.Object);
         }
 
@@ -39,7 +41,7 @@ namespace Proge.WinFormsApp.UnitTests
         [Fact]
         public async Task Load_WhenApiFails_ShouldNotSetBudgets()
         {
-            _mockApiClient.Setup(x => x.List()).ReturnsAsync(new Result<List<Budget>> { }); Result<List<Budget>>.Failure("API viga");
+            _mockApiClient.Setup(x => x.List()).ReturnsAsync(Result<List<Budget>>.Failure("API viga"));
 
             await _presenter.Load();
 
@@ -79,6 +81,8 @@ namespace Proge.WinFormsApp.UnitTests
             _mockView.Setup(x => x.ServiceCost).Returns(100);
             _mockView.Setup(x => x.TotalCost).Returns(200);
             _mockView.Setup(x => x.SelectedItem).Returns((Budget)null);
+            _mockApiClient.Setup(x => x.Save(It.IsAny<Budget>())).ReturnsAsync(Result.Success());
+            _mockApiClient.Setup(x => x.List()).ReturnsAsync(Result<List<Budget>>.Success(new List<Budget>()));
 
             await _presenter.Save();
 
@@ -100,6 +104,8 @@ namespace Proge.WinFormsApp.UnitTests
         {
             var budget = new Budget { Id = 5, Client = "Kustuta" };
             _mockView.Setup(x => x.SelectedItem).Returns(budget);
+            _mockApiClient.Setup(x => x.Delete(5)).ReturnsAsync(Result.Success());
+            _mockApiClient.Setup(x => x.List()).ReturnsAsync(Result<List<Budget>>.Success(new List<Budget>()));
 
             await _presenter.Delete();
 

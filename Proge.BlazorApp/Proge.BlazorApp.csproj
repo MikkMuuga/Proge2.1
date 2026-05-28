@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Proge.PublicAPI\Proge.PublicAPI.csproj" />
   </ItemGroup>
 
 </Project>

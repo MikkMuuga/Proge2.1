@@ -1,6 +1,6 @@
 ﻿@page "/"
-@using Proge.PublicAPI
 @inject IApiClient ApiClient
+@using Proge.BlazorApp
 
 <PageTitle>Budgets</PageTitle>
 
@@ -16,6 +16,7 @@ else if (budgets == null)
 }
 else
 {
+    <p><a class="btn btn-primary" href="/create">Add new</a></p>
     <table class="table">
         <thead>
             <tr>
@@ -24,6 +25,7 @@ else
                 <th>Date</th>
                 <th>Service Cost</th>
                 <th>Total Cost</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +37,10 @@ else
                     <td>@budget.Date.ToShortDateString()</td>
                     <td>@budget.ServiceCost</td>
                     <td>@budget.TotalCost</td>
+                    <td>
+                        <a href="/edit/@budget.Id" class="btn btn-primary">Edit</a>
+                        <button class="btn btn-danger" @onclick="() => Delete(budget.Id)">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -47,14 +53,21 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await Load();
+    }
+
+    private async Task Load()
+    {
         var result = await ApiClient.List();
-        if (!result.IsSuccess)
-        {
-            errorMessage = result.ErrorMessage ?? "Tundmatu viga";
-        }
+        if (result.HasError)
+            errorMessage = string.Join(", ", result.Errors.SelectMany(e => e.Value));
         else
-        {
             budgets = result.Value;
-        }
+    }
+
+    private async Task Delete(int id)
+    {
+        await ApiClient.Delete(id);
+        await Load();
     }
 }

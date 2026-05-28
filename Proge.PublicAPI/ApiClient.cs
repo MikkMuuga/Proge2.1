@@ -75,5 +75,19 @@ namespace Proge.PublicAPI
                 return Result.Failure(ex.Message);
             }
         }
+        public async Task<Result<Budget>> Get(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("Budgets/" + id);
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonSerializer.Deserialize<Budget>(content, _jsonOptions);
+                return Result<Budget>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return Result<Budget>.Failure(ex.Message);
+            }
+        }
     }
 }
