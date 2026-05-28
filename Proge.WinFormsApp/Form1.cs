@@ -46,7 +46,11 @@ namespace Proge.WinFormsApp
         public Form1()
         {
             InitializeComponent();
-            new BudgetPresenter(this, new ApiClient());
+            var presenter = new BudgetPresenter(this, new ApiClient());
+            presenter.OnError = error =>
+            {
+                MessageBox.Show(error, "Viga", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
 
             BudgetsGrid.AutoGenerateColumns = true;
             BudgetsGrid.SelectionChanged += BudgetsGrid_SelectionChanged;

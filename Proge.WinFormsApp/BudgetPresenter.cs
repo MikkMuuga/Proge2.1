@@ -12,6 +12,8 @@ namespace Proge.WinFormsApp
         private readonly IApiClient _apiClient;
         private readonly IBudgetView _view;
 
+        public Action<string> OnError { get; set; }
+
         public BudgetPresenter(IBudgetView view, IApiClient apiClient)
         {
             _apiClient = apiClient;
@@ -44,7 +46,7 @@ namespace Proge.WinFormsApp
             var result = await _apiClient.List();
             if (result.HasError)
             {
-                MessageBox.Show(result.Error, "Viga", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                OnError?.Invoke(result.Error);
                 return;
             }
             _view.Budgets = result.Value;
