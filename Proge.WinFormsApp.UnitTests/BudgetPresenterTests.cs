@@ -1,6 +1,6 @@
 using Moq;
 using Proge.WinFormsApp;
-using Proge.WinFormsApp.Api;
+using Proge.PublicAPI;
 using Xunit;
 
 namespace Proge.WinFormsApp.UnitTests
@@ -15,11 +15,9 @@ namespace Proge.WinFormsApp.UnitTests
         {
             _mockApiClient = new Mock<IApiClient>();
             _mockView = new Mock<IBudgetView>();
-
             _mockApiClient
                 .Setup(x => x.List())
-                .ReturnsAsync(new Result<List<Budget>> { Value = new List<Budget>() });
-
+                .ReturnsAsync(Result<List<Budget>>.Success(new List<Budget>()));
             _presenter = new BudgetPresenter(_mockView.Object, _mockApiClient.Object);
         }
 
@@ -31,7 +29,7 @@ namespace Proge.WinFormsApp.UnitTests
                 new Budget { Id = 1, Client = "Klient A", Date = DateTime.Today, ServiceCost = 100, TotalCost = 200 },
                 new Budget { Id = 2, Client = "Klient B", Date = DateTime.Today, ServiceCost = 200, TotalCost = 400 }
             };
-            _mockApiClient.Setup(x => x.List()).ReturnsAsync(new Result<List<Budget>> { Value = budgets });
+            _mockApiClient.Setup(x => x.List()).ReturnsAsync(Result<List<Budget>>.Success(budgets));
 
             await _presenter.Load();
 
@@ -41,7 +39,7 @@ namespace Proge.WinFormsApp.UnitTests
         [Fact]
         public async Task Load_WhenApiFails_ShouldNotSetBudgets()
         {
-            _mockApiClient.Setup(x => x.List()).ReturnsAsync(new Result<List<Budget>> { Error = "API viga" });
+            _mockApiClient.Setup(x => x.List()).ReturnsAsync(new Result<List<Budget>> { }); Result<List<Budget>>.Failure("API viga");
 
             await _presenter.Load();
 

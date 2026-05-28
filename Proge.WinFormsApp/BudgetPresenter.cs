@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Proge.WinFormsApp.Api;
+using Proge.PublicAPI;
 
 namespace Proge.WinFormsApp
 {
@@ -44,9 +44,9 @@ namespace Proge.WinFormsApp
         public async Task Load()
         {
             var result = await _apiClient.List();
-            if (result.HasError)
+            if (!result.IsSuccess)
             {
-                OnError?.Invoke(result.Error);
+                OnError?.Invoke(result.ErrorMessage);
                 return;
             }
             _view.Budgets = result.Value;
@@ -60,14 +60,24 @@ namespace Proge.WinFormsApp
             budget.Date = _view.Date;
             budget.ServiceCost = _view.ServiceCost;
             budget.TotalCost = _view.TotalCost;
-            await _apiClient.Save(budget);
+            var result = await _apiClient.Save(budget);
+            if (!result.IsSuccess)
+            {
+                OnError?.Invoke(result.ErrorMessage);
+                return;
+            }
             await Load();
         }
 
         public async Task Delete()
         {
             if (_view.SelectedItem == null) return;
-            await _apiClient.Delete(_view.SelectedItem.Id);
+            var result = await _apiClient.Delete(_view.SelectedItem.Id);
+            if (!result.IsSuccess)
+            {
+                OnError?.Invoke(result.ErrorMessage);
+                return;
+            }
             await Load();
         }
     }

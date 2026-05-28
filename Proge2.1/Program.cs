@@ -33,6 +33,7 @@ namespace Proge2._1
                 .AddEntityFrameworkStores<ApplicationDbContext>();
                 // Add MVC Controllers and Razor Pages
                 builder.Services.AddControllersWithViews();
+                builder.Services.AddCors();
 
                 // Register all services for data classes
                 builder.Services.AddScoped<IBudgetService, BudgetService>();
@@ -73,6 +74,11 @@ namespace Proge2._1
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors(options => options
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+            );
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

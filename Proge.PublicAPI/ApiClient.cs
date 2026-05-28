@@ -23,6 +23,11 @@ namespace Proge.PublicAPI
             _httpClient.BaseAddress = new Uri("https://localhost:7123/api/");
         }
 
+        public ApiClient(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
         public async Task<Result<List<Budget>>> List()
         {
             try

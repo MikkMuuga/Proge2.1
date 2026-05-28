@@ -1,0 +1,60 @@
+﻿@page "/"
+@using Proge.PublicAPI
+@inject IApiClient ApiClient
+
+<PageTitle>Budgets</PageTitle>
+
+<h1>Budgets</h1>
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+else if (budgets == null)
+{
+    <p>Laen...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Service Cost</th>
+                <th>Total Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var budget in budgets)
+            {
+                <tr>
+                    <td>@budget.Id</td>
+                    <td>@budget.Client</td>
+                    <td>@budget.Date.ToShortDateString()</td>
+                    <td>@budget.ServiceCost</td>
+                    <td>@budget.TotalCost</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Budget>? budgets;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await ApiClient.List();
+        if (!result.IsSuccess)
+        {
+            errorMessage = result.ErrorMessage ?? "Tundmatu viga";
+        }
+        else
+        {
+            budgets = result.Value;
+        }
+    }
+}

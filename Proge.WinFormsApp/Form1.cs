@@ -1,4 +1,4 @@
-using Proge.WinFormsApp.Api;
+using Proge.PublicAPI;
 
 namespace Proge.WinFormsApp
 {
